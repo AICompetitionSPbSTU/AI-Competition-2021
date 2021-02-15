@@ -1,6 +1,7 @@
 # Analyzing-code-Metrics-2021
 
-Team project to create a code analyzer for the discipline "System programming technology"
+Team project to create a code analyzer for the discipline "System programming technology"  
+
 ##Commit style  
 Формат основного коммита:  
 1)Что сделать + для какой сущности + подробности (необязательно)
