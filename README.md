@@ -1,6 +1,6 @@
 # AI-Competition-2021
 
-Team project to create a code analyzer for the discipline "System programming technology"  
+Team project to create a site for AI-Competition for the discipline "System programming technology"  
 
 ## Commit style  
 Format of the main commit:  
