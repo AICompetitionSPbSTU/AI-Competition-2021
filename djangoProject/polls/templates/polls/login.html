@@ -1,0 +1,7 @@
+<form method="POST" action="{% url 'polls:login' %}">{% csrf_token %}
+        <input type="text" name="username">
+        <input type="text" name="password">
+        <input type="submit" name="submit">
+</form>
+<li><a href="{% url 'polls:registration'  %}">{{ "Регистрация"}}</a></li>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
