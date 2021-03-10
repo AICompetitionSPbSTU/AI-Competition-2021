@@ -5,8 +5,8 @@
     <title>Регистрация нового пользователя</title>
 </head>
 <body>
-    <strong>Страница для регистрации нового юзера</strong>
-    <form method="POST" action="{% url 'polls:registration' %}">{% csrf_token %}
+    <strong>Страница для регистрации нового юзера (username password)</strong>
+    <form method="POST" action="{% url 'botArena:registration' %}">{% csrf_token %}
         <input type="text" name="username">
         <input type="text" name="password">
         <input type="submit" name="submit">

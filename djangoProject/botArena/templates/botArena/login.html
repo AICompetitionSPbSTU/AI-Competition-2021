@@ -1,0 +1,19 @@
+<form method="POST" action="{% url 'botArena:login' %}">{% csrf_token %}
+        <input type="text" name="username">
+        <input type="text" name="password">
+        <input type="submit" name="submit">
+</form>
+<li><a href="{% url 'botArena:registration'  %}">{{ "Регистрация"}}</a></li>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<body>
+<strong>Сюда я передаю game_list, что есть QuerySet из игр.</strong>
+{% if game_list %}
+    <ul>
+    {% for game in game_list %}
+        <li>{{ game.name }}  Лучший игрок {{ game.leader }} Лучший счет {{ game.leader_score }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No games are available.</p>
+{% endif %}
+</body>
