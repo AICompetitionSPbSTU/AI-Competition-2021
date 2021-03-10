@@ -1,0 +1,4 @@
+<form method="POST" action="{% url 'botArena:new_bot' name %}">{% csrf_token %}
+        <input type="text" name="leader">
+        <input type="submit" name="score">
+</form>

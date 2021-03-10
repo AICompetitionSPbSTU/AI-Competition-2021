@@ -5,7 +5,7 @@
     <title>Домашняя страница</title>
     <strong>Тут Егор сделает домашнюю страницу</strong>
     <li><a href="{% url 'botArena:logout'  %}">{{ "Выйти из аккаунта"}}</a></li>
-
+    <li><a href="{% url 'botArena:new_game'  %}">{{ "Создать новую игру"}}</a></li>
 </head>
 <body>
 <strong>Сюда я передаю game_list, что есть QuerySet из игр.</strong>

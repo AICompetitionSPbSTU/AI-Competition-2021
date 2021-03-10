@@ -23,6 +23,15 @@ class Game(models.Model):
         return self.name
 
 
+class Bot(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    creator_name = models.CharField(max_length=200)
+    result = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.creator_name + "_" + str(self.id) + "_" + str(self.game.name)
+
+
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     choice_text = models.CharField(max_length=200)

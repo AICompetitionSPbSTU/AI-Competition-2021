@@ -6,7 +6,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
-from .models import Question, Choice, Game
+from .models import Question, Choice, Game, Bot
 
 
 def logging_test(request):
@@ -19,16 +19,39 @@ def logging_test(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('botArena:home', args=()))
-
-            # Redirect to a success page.
-            ...
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
             return render(request, 'botArena/login.html', context)
-            # Return an 'invalid login' error message.
-
-            ...
     return render(request, 'botArena/login.html', context)
+
+
+def creating_game_view(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('botArena:login', args=()))
+    # TODO проверку на существование такой игры.
+    if request.method == "POST":
+        name = request.POST['name']
+        leader = request.POST['leader']
+        score = 0
+        new_game = Game(name=name, leader=leader, leader_score=score)
+        new_game.save()
+        return HttpResponseRedirect(reverse('botArena:home', args=()))
+
+    return render(request, 'botArena/new_game.html')
+
+
+def creating_bot_view(request, name):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('botArena:login', args=()))
+    # print(name)
+    # TODO get game or 404
+    this_game = Game.objects.filter(name__startswith=name)
+    if request.method == "POST":
+        new_bot = Bot(game=this_game[0], creator_name=request.user.username, result=0)
+        new_bot.save()
+        return HttpResponseRedirect(reverse('botArena:home', args=()))
+
+    return render(request, 'botArena/new_bot.html', {'name':name})
 
 
 def home(request):
@@ -43,13 +66,12 @@ def home(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('botArena:login'))
-    #return render(request, 'botArena/login.html')
 
 
 def game(request, name):
     # Сделать через get object or 4o4?
     this_game = Game.objects.filter(name__startswith=name)
-    print(this_game)
+    # print(this_game)
     if request.user.is_authenticated:
         return render(request, 'botArena/game.html', {'game': this_game[0]})
     else:
@@ -65,7 +87,6 @@ def registration(request):
         return render(request, 'botArena/login.html')
 
     return render(request, 'botArena/registration.html')
-
 
 # def logout(request):
 #     return render(request, 'botArena/logout.html')

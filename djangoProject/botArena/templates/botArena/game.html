@@ -9,5 +9,15 @@
 <strong>Страница для игры</strong>
  <li>{{ game}}</li>
 <li>Я буду передавать сюда объект game, параметры смотри в models.Game</li>
+<li><a href="{% url 'botArena:new_bot' game.name  %}">{{ "Новый бот"}}</a></li>
+{% if game %}
+    <ul>
+    {% for bot in game.bot_set.all  %}
+        <li>{{ bot.creator_name }}  Cчет {{ bot.result }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No bots are avaible.</p>
+{% endif %}
 </body>
 </html>
