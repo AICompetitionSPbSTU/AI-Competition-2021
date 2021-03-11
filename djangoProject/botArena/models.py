@@ -16,8 +16,9 @@ class Question(models.Model):
 
 class Game(models.Model):
     name = models.CharField(max_length=200)
-    leader = models.CharField(max_length=200)
+    leader = models.CharField(max_length=200, default='None')
     leader_score = models.IntegerField(default=0)
+    source = models.FileField(upload_to='game_src/', default='game_src/none.py')
 
     def __str__(self):
         return self.name
@@ -27,6 +28,7 @@ class Bot(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     creator_name = models.CharField(max_length=200)
     result = models.IntegerField(default=0)
+    source = models.FileField(upload_to='bots_src/', default='bots_src/none.py')
 
     def __str__(self):
         return self.creator_name + "_" + str(self.id) + "_" + str(self.game.name)

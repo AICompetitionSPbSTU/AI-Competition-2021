@@ -6,9 +6,11 @@ from django.http import Http404
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 
+from .forms import BotForm, GameForm
 from .models import Question, Choice, Game, Bot
 
 
+# TODO login req
 def logging_test(request):
     game_list = Game.objects.order_by('-name')[:5]
     context = {'game_list': game_list}
@@ -30,14 +32,22 @@ def creating_game_view(request):
         return HttpResponseRedirect(reverse('botArena:login', args=()))
     # TODO проверку на существование такой игры.
     if request.method == "POST":
-        name = request.POST['name']
-        leader = request.POST['leader']
-        score = 0
-        new_game = Game(name=name, leader=leader, leader_score=score)
-        new_game.save()
-        return HttpResponseRedirect(reverse('botArena:home', args=()))
-
-    return render(request, 'botArena/new_game.html')
+        # name = request.POST['name']
+        # leader = request.POST['leader']
+        # score = 0
+        # new_game = Game(name=name, leader=leader, leader_score=score)
+        # new_game.save()
+        print(request.FILES)
+        form = GameForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('botArena:home', args=()))
+        # Если форма не валидная
+        #print(form)
+        form = GameForm()
+        return render(request, 'botArena/new_game.html', {'form': form, 'error_message': "Error occurs"})
+    form = GameForm()
+    return render(request, 'botArena/new_game.html', {'form': form})
 
 
 def creating_bot_view(request, name):
@@ -47,11 +57,21 @@ def creating_bot_view(request, name):
     # TODO get game or 404
     this_game = Game.objects.filter(name__startswith=name)
     if request.method == "POST":
-        new_bot = Bot(game=this_game[0], creator_name=request.user.username, result=0)
-        new_bot.save()
-        return HttpResponseRedirect(reverse('botArena:home', args=()))
+        # print(request.POST)
+        post_values = request.POST.copy()
+        post_values['game'] = this_game[0]
+        post_values['creator_name'] = request.user.username
+        form = BotForm(post_values, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('botArena:home', args=()))
 
-    return render(request, 'botArena/new_bot.html', {'name': name})
+        # Если форма не валидная
+        form = BotForm()
+        return render(request, 'botArena/new_game.html', {'form': form, 'error_message': "Error occurs"})
+    form = BotForm()
+
+    return render(request, 'botArena/new_bot.html', {'name': name, 'form': form})
 
 
 def home(request):

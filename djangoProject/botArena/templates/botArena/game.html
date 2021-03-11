@@ -6,6 +6,8 @@
     <title>Title</title>
 </head>
 <body>
+<li><a href="{% url 'botArena:home'  %}">{{ "Home"}}</a></li>
+<li><a href="{% url 'botArena:logout'  %}">{{ "Exit"}}</a></li>
 <strong>Страница для игры</strong>
  <li>{{ game}}</li>
 <li>Я буду передавать сюда объект game, параметры смотри в models.Game</li>
