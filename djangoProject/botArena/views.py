@@ -51,16 +51,15 @@ def creating_bot_view(request, name):
         new_bot.save()
         return HttpResponseRedirect(reverse('botArena:home', args=()))
 
-    return render(request, 'botArena/new_bot.html', {'name':name})
+    return render(request, 'botArena/new_bot.html', {'name': name})
 
 
 def home(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('botArena:login', args=()))
     game_list = Game.objects.order_by('-name')[:5]
     context = {'game_list': game_list}
-    if request.user.is_authenticated:
-        return render(request, 'botArena/home.html', context)
-    else:
-        return HttpResponseRedirect(reverse('botArena:login', args=()))
+    return render(request, 'botArena/home.html', context)
 
 
 def logout_view(request):
@@ -69,13 +68,12 @@ def logout_view(request):
 
 
 def game(request, name):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('botArena:login', args=()))
     # Сделать через get object or 4o4?
     this_game = Game.objects.filter(name__startswith=name)
     # print(this_game)
-    if request.user.is_authenticated:
-        return render(request, 'botArena/game.html', {'game': this_game[0]})
-    else:
-        return HttpResponseRedirect(reverse('botArena:login', args=()))
+    return render(request, 'botArena/game.html', {'game': this_game[0]})
 
 
 def registration(request):

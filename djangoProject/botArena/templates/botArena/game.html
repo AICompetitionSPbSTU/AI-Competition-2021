@@ -10,6 +10,7 @@
  <li>{{ game}}</li>
 <li>Я буду передавать сюда объект game, параметры смотри в models.Game</li>
 <li><a href="{% url 'botArena:new_bot' game.name  %}">{{ "Новый бот"}}</a></li>
+<li> Сможешь сам отсоротировать по баллам</li>
 {% if game %}
     <ul>
     {% for bot in game.bot_set.all  %}
