@@ -6,3 +6,6 @@
     <button type="submit">Upload</button>
   </form>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<li><a href="{% url 'botArena:home'  %}">{{ "Home"}}</a></li>
+<li><a href="{% url 'botArena:logout'  %}">{{ "Exit"}}</a></li>
+<li>Должен быть не Home а Back, но мне пока лень, потому сделаю, кнопку можешь сделать нормальную, я просто ссылку поменяю</li>
