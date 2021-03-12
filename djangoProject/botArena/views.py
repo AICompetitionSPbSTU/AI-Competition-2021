@@ -11,16 +11,25 @@ from .models import Question, Choice, Game, Bot
 
 
 def logging_test(request):
+    next_to = ""
+    # print(request.POST, request.GET)
+
+    if request.GET:
+        next_to = request.GET['next']
+    # print(next_to)
     game_list = Game.objects.order_by('-name')[:5]
-    context = {'game_list': game_list}
+    context = {'game_list': game_list, 'next': next_to}
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        print(request.POST)
+        # print(request.POST)
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse('botArena:home', args=()))
+            if next_to == "":
+                return HttpResponseRedirect(reverse('botArena:home', args=()))
+            else:
+                return HttpResponseRedirect(next_to)
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
             return render(request, 'botArena/login.html', context)

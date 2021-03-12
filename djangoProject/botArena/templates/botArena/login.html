@@ -1,4 +1,11 @@
-<form method="POST" action="{% url 'botArena:login' %}">{% csrf_token %}
+{% if next %}
+    <form action="{% url 'botArena:login' %}?next={{next}}" method="POST" >
+{% else %}
+    <form method="POST" action="{% url 'botArena:login' %}">
+{%  endif %}
+
+
+    {% csrf_token %}
         <input type="text" name="username">
         <input type="text" name="password">
         <input type="submit" name="submit">
