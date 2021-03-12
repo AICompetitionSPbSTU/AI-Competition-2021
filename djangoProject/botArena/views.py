@@ -16,6 +16,7 @@ def logging_test(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        print(request.POST)
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -26,7 +27,7 @@ def logging_test(request):
     return render(request, 'botArena/login.html', context)
 
 
-@login_required(login_url='login/')
+@login_required()
 def creating_game_view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('botArena:login', args=()))
@@ -50,7 +51,7 @@ def creating_game_view(request):
     return render(request, 'botArena/new_game.html', {'form': form})
 
 
-@login_required(login_url='login/')
+@login_required()
 def creating_bot_view(request, name):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('botArena:login', args=()))
@@ -75,7 +76,7 @@ def creating_bot_view(request, name):
     return render(request, 'botArena/new_bot.html', {'name': name, 'form': form})
 
 
-@login_required(login_url='login/')
+@login_required()
 def home(request):
     # if not request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse('botArena:login', args=()))
@@ -89,7 +90,7 @@ def logout_view(request):
     return HttpResponseRedirect(reverse('botArena:login'))
 
 
-@login_required(login_url='login/')
+@login_required()
 def game(request, name):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('botArena:login', args=()))
