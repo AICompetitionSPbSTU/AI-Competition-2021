@@ -6,13 +6,14 @@
     <title>Title</title>
 </head>
 <body>
-<li><a href="{% url 'botArena:home'  %}">{{ "Home"}}</a></li>
-<li><a href="{% url 'botArena:logout'  %}">{{ "Exit"}}</a></li>
-<strong>Страница для игры</strong>
- <li>{{ game}}</li>
-<li>Я буду передавать сюда объект game, параметры смотри в models.Game</li>
-<li><a href="{% url 'botArena:new_bot' game.name  %}">{{ "Новый бот"}}</a></li>
-<li> Сможешь сам отсоротировать по баллам</li>
+<input type="button" onclick="history.back();" value="Назад"/>
+<li> <a href="{% url 'botArena:home'  %}">{{ "Home"}}</a></li>
+<li> <a href="{% url 'botArena:logout'  %}">{{ "Exit"}}</a></li>
+<strong> Страница для игры </strong>
+<li> {{game}} </li>
+<li> Я буду передавать сюда объект game, параметры смотри в models.Game</li>
+<li><a href="{% url 'botArena:new_bot' game.name  %}">{{"Новый бот"}}</a></li>
+<li> Сможешь сам отсортировать по баллам </li>
 {% if game %}
     <ul>
     {% for bot in game.bot_set.all  %}
