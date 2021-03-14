@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Регистрация нового пользователя</title>
-</head>
-<body>
-    <strong>Страница для регистрации нового юзера (username password)</strong>
-    <form method="POST" action="{% url 'botArena:registration' %}">{% csrf_token %}
-        <input type="text" name="username">
-        <input type="text" name="password">
-        <input type="submit" name="submit">
-</form>
-</body>
-</html>
+{% extends 'botArena/base.html' %}
+{%load static%}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'botArena/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login">
+  <h1>Регистрация</h1>
+    <form method="post">
+      <input type="text" name="u" placeholder="Логин" required="required" />
+        <input type="password" name="p" placeholder="Пароль" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large"> Зарегистрироваться </button>
+    </form>
+</div>
+
+{% endblock %}

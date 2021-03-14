@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{%static 'botArena/css/base.css'%}">
+        {% block head %} {% endblock %}
+    </head>
+
+    <body>
+        <aside>
+            <hd> <h3>AI-competition</h3> </hd>
+            <ul class="left">
+                <a href="{% url 'botArena:home' %}">  <li>  Главная</li> </a>
+                <a href=""> <li> Руководство </li> </a>
+                {% block aside_l %}{% endblock %}
+            </ul>
+            <ul class="right">
+                {% block aside_r %}{% endblock %}
+            </ul>
+        </aside>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>>
+    </body>
+</html>
