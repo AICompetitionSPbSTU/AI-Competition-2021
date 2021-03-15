@@ -1,0 +1,25 @@
+{% extends 'botArena/base.html' %}
+{%load static%}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/login.css'%}">
+{% endblock %}
+
+{% block content %}
+
+<div class="login">
+  <h1>Авторизация</h1>
+    {% if next %}
+        <form action="{% url 'botArena:login' %}?next={{next}}" method="POST" >
+    {% else %}
+        <form method="POST" action="{% url 'botArena:login' %}">
+    {%  endif %}
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Логин" required="required" />
+        <input type="password" name="password" placeholder="Пароль" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large"> Войти </button>
+        <a href="{% url 'botArena:registration'  %}">  Зарегистрироваться </a>
+    </form>
+</div>
+
+{% endblock %}

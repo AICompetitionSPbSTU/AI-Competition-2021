@@ -1,0 +1,38 @@
+{% extends 'botArena/base_logined.html' %}
+{%load static%}
+
+{% block title %}
+    Домашняя страница
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">
+{% endblock %}
+
+{% block content %}
+    {% if game_list %}
+        <ul>
+            <table>
+            <caption>Таблица соревнований</caption>
+                <thead>
+                <tr><th> Игра </th><th> Лучший игрок </th><th> Лучший счёт </th></tr>
+                </thead>
+                <tbody>
+                {% for game in game_list %}
+                    <tr>
+                        <td> <a href="{% url 'botArena:game' game.name %}">{{ game.name }} </a> </td>
+                        <td> {{ game.leader }} </td>
+                        <td> {{ game.leader_score }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </ul>
+    {% else %}
+        <p>No games are available.</p>
+    {% endif %}
+{% endblock %}
+
+{% block aside_l %}
+    <a href="{% url 'botArena:new_game' %}"> <li> Создать новую игру </li> </a>
+{% endblock %}

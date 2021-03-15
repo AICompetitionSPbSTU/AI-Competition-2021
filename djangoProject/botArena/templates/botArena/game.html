@@ -1,0 +1,34 @@
+{% extends 'botArena/base_logined.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/game.css'%}">
+{% endblock %}
+
+{% block content %}
+    <h2> Страница игры {{game.name}} </h2>
+    <br>
+    <form action="{% url 'botArena:new_bot' game.name  %}">
+        <button type="submit" class="btn btn-primary btn-block" > Новый бот </button>
+    </form>
+
+    {% if game %}
+        <table>
+        <caption>Таблица соревнований</caption>
+            <thead>
+            <tr><th> Игрок </th><th> Лучший счёт </th></tr>
+            </thead>
+            <tbody>
+            {% for bot in game.bot_set.all  %}
+                <tr>
+                    <td> {{ bot.creator_name }} </td>
+                    <td> {{ bot.result }} </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <p>No bots are avaible.</p>
+    {% endif %}
+{% endblock %}
