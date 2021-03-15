@@ -9,10 +9,11 @@
 
 <div class="login">
   <h1>Регистрация</h1>
-    <form method="post">
-      <input type="text" name="u" placeholder="Логин" required="required" />
-        <input type="password" name="p" placeholder="Пароль" required="required" />
-        <button type="submit" class="btn btn-primary btn-block btn-large"> Зарегистрироваться </button>
+    <form method="post" action="{% url 'botArena:registration' %}">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Логин" required="required" />
+        <input type="password" name="password" placeholder="Пароль" required="required" />
+        <button type="submit" name="submit" class="btn btn-primary btn-block btn-large"> Зарегистрироваться </button>
     </form>
 </div>
 
