@@ -1,14 +1,16 @@
-<strong>Это мое первое использование шаблонов, поэтому я все вывел</strong>
-<strong>Но в целом поле по поводу выбора игры и по заполнению имени создателя не имеют смысла, тк я их переписываю при отправке</strong>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-  </form>
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-<input onclick="history.back();" value="Назад"
- type="button">
-<br>
-<a href="{% url 'botArena:logout'  %}" >Click Here</a>
-<button type="submit" href="{% url 'botArena:logout'  %}" >{{ "Выход"}}</button>
-<br>
+{% extends 'botArena/base_logined.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/new_bot.css'%}">
+{% endblock %}
+
+{% block content%}
+  <strong>Но в целом поле по поводу выбора игры и по заполнению имени создателя не имеют смысла, тк я их переписываю при отправке</strong>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Upload</button>
+    </form>
+  {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% endblock %}

@@ -13,19 +13,20 @@
 
     <body>
         <aside>
-            <hd> <h3>AI-competition</h3> </hd>
+            <h1>AI-competitions</h1>
             <ul class="left">
-                <a href="{% url 'botArena:home' %}">  <li>  Главная</li> </a>
+                <a href="{% url 'botArena:home' %}">  <li>  Главная </li> </a>
                 <a href=""> <li> Руководство </li> </a>
-                {% block aside_l %}{% endblock %}
+                {% block aside_l %} {% endblock %}
             </ul>
             <ul class="right">
-                {% block aside_r %}{% endblock %}
+                {% block aside_r %} {% endblock %}
+                <a href="#" onclick = history.back();> <li> Назад </li></a>
             </ul>
         </aside>
         <main>
             {% block content %}
             {% endblock %}
-        </main>>
+        </main>
     </body>
 </html>
