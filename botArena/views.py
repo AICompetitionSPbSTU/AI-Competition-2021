@@ -97,7 +97,7 @@ def registration(request):
         password = request.POST['password']
         #user = authenticate(request, username=username, password=password)
         duplicate_users = User.objects.filter(username=username)
-        if duplicate_users is None:
+        if not duplicate_users:
             if len(username) > 50:
                 err_msg = "User name is too long"
                 return render(request, 'botArena/registration.html', {"error_message": err_msg})
