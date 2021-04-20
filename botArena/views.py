@@ -239,17 +239,22 @@ def playing_game_view(request, game_name):
         game_cond = request.GET.get("game_cond")
         if game_name == "tic_tac_toe":
             if game_cond == "start":
-                start = [-1 for _ in range(9)]
+                start = ['-1' for _ in range(9)]
                 seed()
                 data = json.dumps({'inner_state': start})
                 return HttpResponse(data, content_type='json')
             if game_cond == "running":
-                state = request.GET.get("inner_state")
+                state = request.GET.get("inner_state").split(',')
 
+                # print(state)
+                # print(state[0])
+                # print(state[1])
                 while True:
                     bot_choose = randint(0, 8)
-                    if state[bot_choose] == -1:
-                        state[bot_choose] = 0
+                    #print(bot_choose)
+                    #print("nigga")
+                    if state[bot_choose] == '-1':
+                        state[bot_choose] = '0'
                         break
                 data = json.dumps({
                     'inner_state': state,
