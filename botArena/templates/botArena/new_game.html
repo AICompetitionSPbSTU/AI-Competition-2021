@@ -1,0 +1,17 @@
+{% extends 'botArena/base.html' %}
+{%load static%}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/new_game.css'%}">
+{% endblock %}
+
+{% block content %}
+    <div class="example-3">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block btn-large"> Загрузить </button>
+          </form>
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    </div>
+{% endblock %}

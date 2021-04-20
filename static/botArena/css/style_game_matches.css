@@ -1,0 +1,18 @@
+h1{
+    text-align: center;
+}
+.match {
+    border: 1px solid black;
+    height: 125px;
+    background-color: rgb(241, 210, 255);
+}
+
+.matches{
+    position: relative;
+    left: 10%;
+    width: 80%;
+}
+
+.buttons{
+    padding: 1%;
+}

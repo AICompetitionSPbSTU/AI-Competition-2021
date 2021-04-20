@@ -1,0 +1,40 @@
+{% extends 'botArena/base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{%static 'botArena/css/game.css'%}">
+{% endblock %}
+
+{% block nav %}
+    <a href="{% url 'botArena:new_bot' game.name  %}"> New bot </a>
+    <a href ="{% url 'botArena:play_view' game.name %}"> Play </a>
+{% endblock %}
+
+{% block content %}
+    <h2> {{game.name}} </h2>
+
+    {% if game %}
+        <div class="c">
+            {%  if game.bot_set.all %}
+            <table>
+            <caption>Competition table</caption>
+                <thead>
+                <tr><th> Player </th><th> Best score </th></tr>
+                </thead>
+                <tbody>
+                {% for bot in game.bot_set.all  %}
+                    <tr>
+                        <td> <a href="{% url 'botArena:bot' game.name bot.creator_name bot.id %}"> {{ bot.creator_name }} </a> </td>
+                        <td> {{ bot.result }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+                {% else %}
+        <p>No bots are avaible</p>
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+{% endblock %}

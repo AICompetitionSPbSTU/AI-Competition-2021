@@ -1,0 +1,49 @@
+{% extends 'botArena/base.html' %}
+
+{% block head %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Matches</title>
+    <link rel="stylesheet" type="text/css" href="/static/botArena/css/style_game_matches.css">
+</head>
+
+{% endblock head %}
+
+{% block content %}
+
+    <h1 >Matches</h1>
+{##}
+<div class="matches" align="center">
+{#    var path = "/static/botArena/source/match.png" #}
+    <img src="/static/botArena/source/match.png" class="match" id="1">
+    <img src="/static/botArena/source/match.png"class="match" id="2">
+    <img src="/static/botArena/source/match.png" class="match" id="3">
+    <img src="/static/botArena/source/match.png"class="match" id="4">
+    <img src="/static/botArena/source/match.png" class="match" id="5">
+    <img src="/static/botArena/source/match.png" class="match" id="6">
+    <img src="/static/botArena/source/match.png" class="match" id="7">
+    <img src="/static/botArena/source/match.png" class="match" id="8">
+    <img src="/static/botArena/source/match.png" class="match" id="9">
+    <img src="/static/botArena/source/match.png" class="match" id="10">
+    <img src="/static/botArena/source/match.png" class="match" id="11">
+    <img src="/static/botArena/source/match.png" class="match" id="12">
+    <img src="/static/botArena/source/match.png"class="match" id="13">
+    <img src="/static/botArena/source/match.png"class="match" id="14">
+    <img src="/static/botArena/source/match.png" class="match" id="15">
+    <img src="/static/botArena/source/match.png" class="match" id="16">
+    <img src="/static/botArena/source/match.png" class="match" id="17">
+    <img src="/static/botArena/source/match.png" class="match" id="18">
+    <img src="/static/botArena/source/match.png" class="match" id="19">
+    <img src="/static/botArena/source/match.png" class="match" id="20">
+    <img src="/static/botArena/source/match.png" class="match" id="21">
+    <p class="buttons" align="center">
+        <button onclick='window.location.reload(true)'>New game</button>
+        <button class="nextStep">Next step</button>
+
+    </p>
+    <script type="text/javascript" src="/static/botArena/js/game_matches.js"></script>
+
+
+</div>
+{% endblock content %}
