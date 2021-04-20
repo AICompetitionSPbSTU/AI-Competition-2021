@@ -240,11 +240,12 @@ def playing_game_view(request, game_name):
         if game_name == "tic_tac_toe":
             if game_cond == "start":
                 start = [-1 for _ in range(9)]
+                seed()
                 data = json.dumps({'inner_state': start})
                 return HttpResponse(data, content_type='json')
             if game_cond == "running":
                 state = request.GET.get("inner_state")
-                seed()
+
                 while True:
                     bot_choose = randint(0, 8)
                     if state[bot_choose] == -1:
@@ -265,6 +266,7 @@ def playing_game_view(request, game_name):
                 # p.daemon = True
                 # p.start()
                 # p.join()
+                seed()
                 run_game(src)
                 # os.system('python '+str(data)+" &")
                 data = json.dumps({
@@ -274,7 +276,6 @@ def playing_game_view(request, game_name):
 
             if game_cond == "running":
                 count = request.GET.get("inner_state")
-                seed()
                 bot_choose = randint(1, 3)
                 new_state = int(count) - bot_choose
                 data = json.dumps({
