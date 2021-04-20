@@ -20,6 +20,7 @@ class Game(models.Model):
     leader_score = models.IntegerField(default=0)
     source = models.FileField(upload_to='game_src/', default='game_src/none.py')
     interface = models.CharField(max_length=200, default='None')
+    description = models.CharField(max_length=40, default='Add description')
 
     def __str__(self):
         return self.name
