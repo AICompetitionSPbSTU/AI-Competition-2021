@@ -19,6 +19,8 @@ from urllib.request import urlopen
 from multiprocessing import Process
 from threading import Thread
 
+import subprocess
+
 
 def logging_test(request):
     next_to = ""
@@ -221,14 +223,22 @@ def start_new_thread(function):
     return decorator
 
 
-@start_new_thread
-def run_game(src):
-    # from django.db import connection
-    # connection.close()
-    #smt=''
-    with src as f:
-        result = exec(f.read())
-    pass
+def run_game(path):
+    sp = subprocess.Popen(['python', path],
+                           stdin=subprocess.PIPE,
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT,
+                           universal_newlines=True)
+
+    # вот этот sp
+    # видимо нужно как то сохранять
+    # либо мб сохранять какой нибудь id процесса
+    # и потом этот объект как то заново создавать
+    
+    for i in range(5):
+        sp.stdin.write(f'test message {i}' + '\n')
+        sp.stdin.flush()
+        print(f'answer #{i}:', sp.stdout.readline())
 
 
 @login_required()
@@ -236,21 +246,15 @@ def playing_game_view(request, game_name):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     if request.method == "GET":
-        # print(request.GET)
         game_cond = request.GET.get("game_cond")
-        # game_cond = "start"
+
         if game_cond == "start":
-            # data = this_game.source.open()
-            # with data as f:
-            # print(this_game)
-            # data = "media/"+str(data)
+
             src = this_game.source.open()
-            # p = Thread(target=run_game, args=(src,))
-            # p.daemon = True
-            # p.start()
-            # p.join()
-            run_game(src)
-            # os.system('python '+str(data)+" &")
+            
+            path = 'media/' + this_game.source.name
+            run_game(path)
+
             data = json.dumps({
                 'inner_state': 21,
             })
