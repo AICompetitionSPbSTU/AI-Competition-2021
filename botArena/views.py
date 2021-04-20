@@ -1,8 +1,8 @@
 import os
-# import boto3
+#import boto3
 import json
 from random import seed, randint
-# from botocore.config import Config
+#from botocore.config import Config
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -95,9 +95,9 @@ def registration(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        # user = authenticate(request, username=username, password=password)
+        #user = authenticate(request, username=username, password=password)
         duplicate_users = User.objects.filter(username=username)
-        if not duplicate_users:
+        if duplicate_users is None:
             if len(username) > 50:
                 err_msg = "User name is too long"
                 return render(request, 'botArena/registration.html', {"error_message": err_msg})
@@ -225,7 +225,7 @@ def start_new_thread(function):
 def run_game(src):
     # from django.db import connection
     # connection.close()
-    # smt=''
+    #smt=''
     with src as f:
         result = exec(f.read())
     pass
@@ -236,57 +236,35 @@ def playing_game_view(request, game_name):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     if request.method == "GET":
+        # print(request.GET)
         game_cond = request.GET.get("game_cond")
-        if game_name == "tic_tac_toe":
-            if game_cond == "start":
-                start = ['-1' for _ in range(9)]
-                seed()
-                data = json.dumps({'inner_state': start})
-                return HttpResponse(data, content_type='json')
-            if game_cond == "running":
-                state = request.GET.get("inner_state").split(',')
+        # game_cond = "start"
+        if game_cond == "start":
+            # data = this_game.source.open()
+            # with data as f:
+            # print(this_game)
+            # data = "media/"+str(data)
+            src = this_game.source.open()
+            # p = Thread(target=run_game, args=(src,))
+            # p.daemon = True
+            # p.start()
+            # p.join()
+            run_game(src)
+            # os.system('python '+str(data)+" &")
+            data = json.dumps({
+                'inner_state': 21,
+            })
+            return HttpResponse(data, content_type='json')
 
-                # print(state)
-                # print(state[0])
-                # print(state[1])
-                while True:
-                    bot_choose = randint(0, 8)
-                    #print(bot_choose)
-                    #print("nigga")
-                    if state[bot_choose] == '-1':
-                        state[bot_choose] = '0'
-                        break
-                data = json.dumps({
-                    'inner_state': state,
-                })
-                return HttpResponse(data, content_type='json')
-        else:
-            if game_cond == "start":
-                # data = this_game.source.open()
-                # with data as f:
-                # print(this_game)
-                # data = "media/"+str(data)
-                src = this_game.source.open()
-                # p = Thread(target=run_game, args=(src,))
-                # p.daemon = True
-                # p.start()
-                # p.join()
-                seed()
-                run_game(src)
-                # os.system('python '+str(data)+" &")
-                data = json.dumps({
-                    'inner_state': 21,
-                })
-                return HttpResponse(data, content_type='json')
-
-            if game_cond == "running":
-                count = request.GET.get("inner_state")
-                bot_choose = randint(1, 3)
-                new_state = int(count) - bot_choose
-                data = json.dumps({
-                    'inner_state': new_state,
-                })
-                return HttpResponse(data, content_type='json')
+        if game_cond == "running":
+            count = request.GET.get("inner_state")
+            seed()
+            bot_choose = randint(1, 3)
+            new_state = int(count) - bot_choose
+            data = json.dumps({
+                'inner_state': new_state,
+            })
+            return HttpResponse(data, content_type='json')
     print(this_game.interface)
     return render(request, this_game.interface)
 
