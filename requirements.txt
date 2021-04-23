@@ -6,3 +6,4 @@ gunicorn
 django-heroku
 dj-database-url
 boto3~=1.17.38
+psutil~=5.8.0

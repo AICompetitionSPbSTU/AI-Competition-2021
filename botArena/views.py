@@ -2,6 +2,8 @@ import ctypes
 import os
 # import boto3
 import json
+import psutil
+import subprocess
 from random import seed, randint
 # from botocore.config import Config
 from django.contrib.auth.models import User
@@ -214,82 +216,116 @@ def about_view(request):
     return render(request, 'botArena/about.html')  # some space
 
 
-def start_new_thread(function):
-    def decorator(*args, **kwargs):
-        _, name = args
-        t = Thread(target=function, args=args, kwargs=kwargs)
-        t.name = name
-        t.daemon = True
-        t.start()
-
-    return decorator
-
-
-@start_new_thread
-def run_game(src, user_name):
-    # from django.db import connection
-    # connection.close()
-    # smt=''
-    with src as f:
-        result = exec(f.read())
-    pass
+# def start_new_thread(function):
+#     def decorator(*args, **kwargs):
+#         _, name = args
+#         t = Thread(target=function, args=args, kwargs=kwargs)
+#         t.name = name
+#         t.daemon = True
+#         t.start()
+#
+#     return decorator
 
 
-def check_user_already_play(user_name):
-    for t in enumerate():
-        name = t.getName()
-        if name == str(user_name):
-            print("kill proc", name)
-            #thread_id = t.native_id local
-            #print(dir(t))
-            thread_id = t.ident # for heroku
-            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
-                                                             ctypes.py_object(SystemExit))
-            if res > 1:
-                ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-                print('Exception raise failure')
-            print("I kill him!!!")
+# @start_new_thread
+# def run_game(src, user_name):
+#     # from django.db import connection
+#     # connection.close()
+#     # smt=''
+#     with src as f:
+#         result = exec(f.read())
+#     pass
+def get_sub_proc(user):  # TODO обновлять id
+
+    # current_process = psutil.Process()
+    find = cache.get(user)
+    print("find", find)
+    # return psutil.Process(find)
+    # ps = psutil.Popen(['python', psutil.Process(find).exe()],
+    #                   stdin=subprocess.PIPE,
+    #                   stdout=subprocess.PIPE,
+    #                   stderr=subprocess.STDOUT,
+    #                   universal_newlines=True)
+    # cache.set(user, ps.pid)
+    ps = psutil.Process(find)
+    print(ps.exe())
+    # term = ps.terminal()
+
+    return ps
+
+    # children = current_process.children(recursive=True)  #TODO psutil.Process(find)
+    # for child in children:
+    #     if child.pid == find:
+    #         return child
+
+
+def run_game(path, user):
+    exist = cache.get(user)
+    if exist:
+        running = get_sub_proc(user)
+        running.kill()
+    sp = subprocess.Popen(['python', path],
+                          stdin=subprocess.PIPE,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT,
+                          universal_newlines=True)
+    print("create", sp.pid)
+    cache.set(user, sp.pid, 1200)
+    # вот этот sp
+    # видимо нужно как то сохранять
+    # либо мб сохранять какой нибудь id процесса
+    # и потом этот объект как то заново создавать
+
+    # for i in range(5):
+    #     sp.stdin.write(f'test message {i}' + '\n')
+    #     sp.stdin.flush()
+    #     print(f'answer #{i}:', sp.stdout.readline())
 
 
 @login_required()
 def playing_game_view(request, game_name):
-    for t in enumerate():
-        print(t.getName())
-    print('-' * 10)
-
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
         if game_name == "tic_tac_toe":
             if game_cond == "start":
-                check_user_already_play(request.user)
-                src = this_game.source.open()
-                #run_game(src, request.user)
-                print("run tic_tac for ", request.user)
+                path = 'media/' + this_game.source.name
+                # run_game(path, request.user)
+                print("start tic tac toe", request.user)
                 start = ['-1' for _ in range(9)]
                 seed()
                 data = json.dumps({'inner_state': start})
                 return HttpResponse(data, content_type='json')
             if game_cond == "running":
-                state = request.GET.get("inner_state").split(',')
+                state = request.GET.get("inner_state")
+                # for sanya
+                # print(state)
+                # child = get_sub_proc(request.user)
+                # child.stdin.write(state)
+                # child.stdin.flush()
+                # state = child.stdout.readline()
+                # print(state)
+                state = state.split(",")
                 while True:
+
                     bot_choose = randint(0, 8)
-                    # print(bot_choose)
-                    # print("nigga")
                     if state[bot_choose] == '-1':
                         state[bot_choose] = '0'
                         break
+
                 data = json.dumps({
                     'inner_state': state,
                 })
                 return HttpResponse(data, content_type='json')
         else:
             if game_cond == "start":
-                check_user_already_play(request.user)
-                src = this_game.source.open()
+                # check_user_already_play(request.user)
+                path = 'media/' + this_game.source.name
+                #run_game(path, request.user)
+                # src = this_game.source.open()
                 seed()
-                #run_game(src, request.user)
+                # run_game(src, request.user)
                 print("run matches for ", request.user)
                 # os.system('python '+str(data)+" &")
                 data = json.dumps({
@@ -298,8 +334,6 @@ def playing_game_view(request, game_name):
                 return HttpResponse(data, content_type='json')
 
             if game_cond == "running":
-                for t in enumerate():
-                    print(t.getName())
                 count = request.GET.get("inner_state")
                 bot_choose = randint(1, 3)
                 new_state = int(count) - bot_choose

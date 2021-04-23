@@ -24,7 +24,7 @@ SECRET_KEY = '06si*db26h+=_6x$9fksxvr#j###7!(#+e@neocfwz!7b#7k&y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-HEROKU = True
+HEROKU = False
 ALLOWED_HOSTS = ['bots-arena.herokuapp.com', '127.0.0.1']
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # During development only
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,11 +81,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-#Start for heroku
+# Start for heroku
 if HEROKU:
     import dj_database_url
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 if HEROKU:
     CACHES = {
@@ -96,10 +96,11 @@ if HEROKU:
     }
 else:
     CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake',
+        }
     }
-}
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -133,7 +134,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
-#comment
+# comment
 if not HEROKU:
     STATICFILES_DIRS = [
         BASE_DIR / "static",
@@ -148,7 +149,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = '/botArena/login/'
 
-#email staff
+# email staff
 if HEROKU:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
