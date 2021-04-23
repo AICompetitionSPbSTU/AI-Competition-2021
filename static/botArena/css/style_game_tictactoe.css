@@ -13,11 +13,12 @@ td {
 table {
     border-collapse: collapse;
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: black;
     border: 2px solid #333;
+    background-color: #e7cdff;
 }
 
 table tr:first-child td {
