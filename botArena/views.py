@@ -265,7 +265,7 @@ def playing_game_view(request, game_name):
             if game_cond == "start":
                 check_user_already_play(request.user)
                 src = this_game.source.open()
-                run_game(src, request.user)
+                #run_game(src, request.user)
                 print("run tic_tac for ", request.user)
                 start = ['-1' for _ in range(9)]
                 seed()
@@ -289,7 +289,7 @@ def playing_game_view(request, game_name):
                 check_user_already_play(request.user)
                 src = this_game.source.open()
                 seed()
-                run_game(src, request.user)
+                #run_game(src, request.user)
                 print("run matches for ", request.user)
                 # os.system('python '+str(data)+" &")
                 data = json.dumps({
