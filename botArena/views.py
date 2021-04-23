@@ -248,6 +248,7 @@ def check_user_already_play(user_name):
             if res > 1:
                 ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
                 print('Exception raise failure')
+            print("I kill him!!!")
 
 
 @login_required()
