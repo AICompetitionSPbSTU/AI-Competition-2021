@@ -242,7 +242,7 @@ def check_user_already_play(user_name):
             print("kill proc", name)
             #thread_id = t.native_id local
             print(dir(t))
-            thread_id = t.ident() # for heroku
+            thread_id = t.ident # for heroku
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
                                                              ctypes.py_object(SystemExit))
             if res > 1:
