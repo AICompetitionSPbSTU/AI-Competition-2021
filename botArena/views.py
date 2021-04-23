@@ -240,7 +240,8 @@ def check_user_already_play(user_name):
         name = t.getName()
         if name == str(user_name):
             print("kill proc", name)
-            thread_id = t.native_id
+            #thread_id = t.native_id local
+            thread_id = t.get_id()
             res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
                                                              ctypes.py_object(SystemExit))
             if res > 1:
