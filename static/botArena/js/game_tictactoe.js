@@ -17,7 +17,7 @@ const winCombos = [
   [6, 4, 2]
 ];
 const cells = document.querySelectorAll(".cell");
-
+let buttonEvent = false;
 
 startGame();
 
@@ -95,7 +95,11 @@ function CheckWin(){
         window.location.reload();
     }
     else if (Check(indexesX) === true){
-        alert("You win!");
+        alert("You win :)");
+        window.location.reload();
+    }
+    if(occupied.every((elem) => elem === true)){
+        alert("It's a draw!");
         window.location.reload();
     }
 }
@@ -109,19 +113,25 @@ function turnClick() {
             document.getElementById(this.id).style.pointerEvents = 'none';
             state[this.id] = '1';
             occupied[this.id] = true;
+            buttonEvent = true;
             CheckWin();
-            console.log(counter);
         }
         else {
-            alert("Press 'Next move'");
+            alert("Press 'Next step'");
         }
     }
     else {
-        document.getElementById(this.id).innerText = bot;
-        document.getElementById(this.id).style.pointerEvents = 'none';
-        occupied[this.id] = true;
-        botMove = false;
-        CheckWin();
+        if (buttonEvent === true){
+            buttonEvent = false;
+            document.getElementById(this.id).innerText = bot;
+            document.getElementById(this.id).style.pointerEvents = 'none';
+            occupied[this.id] = true;
+            botMove = false;
+            CheckWin();
+        }
+        else {
+            alert("Now is your move")
+        }
     }
 
 }
@@ -131,11 +141,18 @@ function Sleep(time) {
 }
 
 function ButtonEvent(){
-    counter = 0;
-    RequestRunning(state);
-    Sleep(200).then(() => {
-        ImagineClick();
-    });
+    if(buttonEvent === false){
+        alert("Now is your move");
+    }
+    else{
+        counter = 0;
+        RequestRunning(state);
+        Sleep(500).then(() => {
+            ImagineClick();
+        });
+    }
+
+
 }
 
 
@@ -143,7 +160,7 @@ function ImagineClick(){
     console.log('imagine click');
     botMove = true;
     for (let i = 0; i < state.length; i++) {
-        if (state[i] === '0' && occupied[i] === false){
+        if (state[i] === '0' && occupied[i] === false) {
             cells[i].click();
             return;
         }
