@@ -1,2 +1,6 @@
-print("THIS IS VERY STRANGE!")
-print("Because why the hell?"+str(3))
+c = 0
+while True:
+    c += 1
+    if c == 10 ** 8:
+        print("tictac still running")
+        c = 0

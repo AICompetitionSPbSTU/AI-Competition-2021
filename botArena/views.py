@@ -1,3 +1,4 @@
+import ctypes
 import os
 # import boto3
 import json
@@ -17,7 +18,8 @@ from .models import Question, Choice, Game, Bot
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
 from multiprocessing import Process
-from threading import Thread
+from threading import Thread, enumerate
+from django.core.cache import cache
 
 
 def logging_test(request):
@@ -73,7 +75,7 @@ def creating_game_view(request):
 def home(request):
     # if not request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse('botArena:login', args=()))
-    game_list = Game.objects.order_by('-name')[:5]
+    game_list = Game.objects.order_by('-name')[:7]
     context = {'game_list': game_list}
     return render(request, 'botArena/home.html', context)
 
@@ -209,12 +211,14 @@ def creating_bot_view(request, name):
 
 # expected new page
 def about_view(request):
-    return render(request, 'botArena/about.html') #some space
+    return render(request, 'botArena/about.html')  # some space
 
 
 def start_new_thread(function):
     def decorator(*args, **kwargs):
+        _, name = args
         t = Thread(target=function, args=args, kwargs=kwargs)
+        t.name = name
         t.daemon = True
         t.start()
 
@@ -222,7 +226,7 @@ def start_new_thread(function):
 
 
 @start_new_thread
-def run_game(src):
+def run_game(src, user_name):
     # from django.db import connection
     # connection.close()
     # smt=''
@@ -231,28 +235,45 @@ def run_game(src):
     pass
 
 
+def check_user_already_play(user_name):
+    for t in enumerate():
+        name = t.getName()
+        if name == str(user_name):
+            print("kill proc", name)
+            thread_id = t.native_id
+            res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
+                                                             ctypes.py_object(SystemExit))
+            if res > 1:
+                ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
+                print('Exception raise failure')
+
+
 @login_required()
 def playing_game_view(request, game_name):
+    for t in enumerate():
+        print(t.getName())
+    print('-' * 10)
+
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
         if game_name == "tic_tac_toe":
             if game_cond == "start":
+                check_user_already_play(request.user)
+                src = this_game.source.open()
+                run_game(src, request.user)
+                print("run tic_tac for ", request.user)
                 start = ['-1' for _ in range(9)]
                 seed()
                 data = json.dumps({'inner_state': start})
                 return HttpResponse(data, content_type='json')
             if game_cond == "running":
                 state = request.GET.get("inner_state").split(',')
-
-                # print(state)
-                # print(state[0])
-                # print(state[1])
                 while True:
                     bot_choose = randint(0, 8)
-                    #print(bot_choose)
-                    #print("nigga")
+                    # print(bot_choose)
+                    # print("nigga")
                     if state[bot_choose] == '-1':
                         state[bot_choose] = '0'
                         break
@@ -262,17 +283,11 @@ def playing_game_view(request, game_name):
                 return HttpResponse(data, content_type='json')
         else:
             if game_cond == "start":
-                # data = this_game.source.open()
-                # with data as f:
-                # print(this_game)
-                # data = "media/"+str(data)
+                check_user_already_play(request.user)
                 src = this_game.source.open()
-                # p = Thread(target=run_game, args=(src,))
-                # p.daemon = True
-                # p.start()
-                # p.join()
                 seed()
-                run_game(src)
+                run_game(src, request.user)
+                print("run matches for ", request.user)
                 # os.system('python '+str(data)+" &")
                 data = json.dumps({
                     'inner_state': 21,
@@ -280,6 +295,8 @@ def playing_game_view(request, game_name):
                 return HttpResponse(data, content_type='json')
 
             if game_cond == "running":
+                for t in enumerate():
+                    print(t.getName())
                 count = request.GET.get("inner_state")
                 bot_choose = randint(1, 3)
                 new_state = int(count) - bot_choose
