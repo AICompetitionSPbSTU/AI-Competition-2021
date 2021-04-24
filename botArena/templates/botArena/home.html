@@ -7,27 +7,26 @@
 
 {% block head %}
     <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">
+    <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">
+    <script src="/static/botArena/js/home.js"></script>
 {% endblock %}
 
 {% block content %}
     {% if game_list %}
-        <div class="c">
-            <table>
-            <caption>Competition table</caption>
-                <thead>
-                <tr><th> Game </th><th> Best player </th><th> Best score </th></tr>
-                </thead>
-                <tbody>
-                {% for game in game_list %}
-                    <tr>
-                        <td> <a href="{% url 'botArena:game' game.name %}">{{ game.name }} </a> </td>
-                        <td> {{ game.leader }} </td>
-                        <td> {{ game.leader_score }} </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <ul id="game_list">
+            {% for game in game_list %}
+                <li><a class="myLinkModal" href="#">{{ game.name }}</a></li>
+
+                <div id="myModal">
+
+                      <p> {{ game.description }} <br> Best score : {{ game.leader_score }} by {{ game.leader }}</p>
+                    <a href="{% url 'botArena:game' game.name %}"> Play </a>
+                    <a></a>
+                        <span id="myModal__close" class="close">ₓ</span>
+                </div>
+                <div id="myOverlay"></div>
+            {% endfor %}
+        </ul>
     {% else %}
         <p>No games are available</p>
     {% endif %}
@@ -41,4 +40,5 @@
     {% else %}
        <a href="{% url 'botArena:login' %}">  Login  </a>
     {% endif %}
+
 {% endblock %}
