@@ -27,7 +27,7 @@ def logging_test(request):
     if request.GET:
         next_to = request.GET['next']
     # print(next_to)
-    game_list = Game.objects.order_by('-name')[:5]
+    game_list = Game.objects.order_by('-name')
     context = {'game_list': game_list, 'next': next_to}
     if request.method == 'POST':
         username = request.POST['username']
