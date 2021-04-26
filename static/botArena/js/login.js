@@ -1,99 +1,56 @@
-/* Изначально форма не заполнена и по этому считаем что все возможные ошибки есть  */
-var errorNull = true, errorMail = true, errorPass = true;
+jQuery(function($) {
+  $('#register').on('submit', function(event) {
+    if ( validateForm() ) { // если есть ошибки возвращает true
 
-/* Для удобства и уменьшения размера кода выносим функцию проверки поля на null в отдельную переменную */
-var checkNull = function(){
-  $(this).val($(this).val().trim());
-  if ($(this).val() =="") {
-    /* Выводим сообщение об ошибке под элементом.
-       This в данном случае это элемент, который инициировал вызов функции */
-    $(this).notify("Поле нужно заполнить", "error");
-    $(this).addClass("errtextbox");
-    errorNull = true;
-  } else {
-    errorNull = false;
-    $(this).removeClass("errtextbox");
-  }
-};
+      event.preventDefault();
+      $( "send" ).effect("shake");
 
-/* Проверяем значения полей Имя и Информация на null в момент когда они теряют фокус */
-$("#username").focusout(checkNull);
+    }});
 
-/* Проверка поля Имя на соответствие длинны */
-$("#username").keyup(function(){
-  var value = $(this).val();
-  if (value.length > 24){
-    $(this).notify("Максимум 25 символов", "info");
-    $(this).val(value.slice(0,24));
-  }
-});
 
-/* Проверяем корректность E-mail */
-$("#mail").focusout(function(){
-  var value = $(this).val().trim();
-/* Для этого используем регулярное выражение  */
-  if (value.search(/^[a-z0-9]{3,}@mail\.com$/i) != 0) {
-    $(this).notify("E-mail введён не корректно", "error");
-    $(this).addClass("errtextbox");
-    errorMail = true;
-  } else {
-    $(this).removeClass("errtextbox");
-    errorMail = false;
-  }
-});
+  $('#register').on('input', function (event) {
+      validateForm()
+  });
 
-/* Проверяем длину пароля */
-$("#password").focusout(function(){
-  var value = $(this).val();
-  if (value.length <= 4) {
-    $(this).notify("Минимум 5 символов", "error");
-    $(this).addClass("errtextbox");
-    errorPass = true;
-  } else {
-    if (value.length > 9) {
-      $(this).notify("Миксимум 10 символов", "error");
-      $(this).addClass("errtextbox");
-      errorPass = true;
-    } else {
-      errorPass = false;
-      $(this).removeClass("errtextbox");
+
+  function validateForm() {
+    $(".text-error").remove();
+
+    // Проверка логина
+    var el_l = $("#login");
+    if ( el_l.val().length < 4 ) {
+      var v_login = true;
+      el_l.after('<span class="text-error for-login">Логин должен быть больше 3 символов</span>');
+      document.getElementById('login').style.color = "red";
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
     }
+    else{
+        document.getElementById('login').style.color = "blue";
+    }
+    $("#login").toggleClass('error', v_login );
+
+
+    // Проверка паролей
+
+    var el_p1    = $("#pass1");
+
+    var v_pass1 = el_p1.val()?false:true;
+
+    if ( el_p1.val() != el_p2.val() ) {
+      var v_pass1 = true;
+      var v_pass2 = true;
+      el_p1.after('<span class="text-error for-pass1">Пароли не совпадают!</span>');
+      document.getElementById('pass1').style.color = "red";
+        document.getElementById('pass2').style.color = "red";
+      $(".for-pass1").css({top: el_p1.position().top + el_p1.outerHeight() + 2});
+    }
+    else{
+        document.getElementById('pass1').style.color = "blue";
+    }
+
+    $("#pass1").toggleClass('error', v_pass1 );
+
+    return ( v_login || v_email || v_pass1 || v_pass2 );
   }
-});
 
-
-/* В результате клика по кнопке отправить если ошибок заполнения нет то форма отправляется иначе получаем сообщение об ошибке */
-$("#submit").click(function(){
-  if (!(errorNull || errorMail || errorPass)) {
-    $("#login").submit();
-  } else {
-    $(this).notify("Форма пустая или заполнена не корректно", "error");
-  }
-});
-
-
-// $('form[id="login"]').validate({
-//   rules: {
-//     fname: 'required',
-//     lname: 'required',
-//     user_email: {
-//       required: true,
-//       email: true,
-//     },
-//     psword: {
-//       required: true,
-//       minlength: 8,
-//     }
-//   },
-//   messages: {
-//     fname: 'This field is required',
-//     lname: 'This field is required',
-//     user_email: 'Enter a valid email',
-//     psword: {
-//       minlength: 'Password must be at least 8 characters long'
-//     }
-//   },
-//   submitHandler: function(form) {
-//     form.submit();
-//   }
-// });
+})
