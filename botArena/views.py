@@ -216,72 +216,6 @@ def about_view(request):
     return render(request, 'botArena/about.html')  # some space
 
 
-# def start_new_thread(function):
-#     def decorator(*args, **kwargs):
-#         _, name = args
-#         t = Thread(target=function, args=args, kwargs=kwargs)
-#         t.name = name
-#         t.daemon = True
-#         t.start()
-#
-#     return decorator
-
-
-# @start_new_thread
-# def run_game(src, user_name):
-#     # from django.db import connection
-#     # connection.close()
-#     # smt=''
-#     with src as f:
-#         result = exec(f.read())
-#     pass
-def get_sub_proc(user):  # TODO обновлять id
-
-    # current_process = psutil.Process()
-    find = cache.get(user)
-    print("find", find)
-    # return psutil.Process(find)
-    # ps = psutil.Popen(['python', psutil.Process(find).exe()],
-    #                   stdin=subprocess.PIPE,
-    #                   stdout=subprocess.PIPE,
-    #                   stderr=subprocess.STDOUT,
-    #                   universal_newlines=True)
-    # cache.set(user, ps.pid)
-    ps = psutil.Process(find)
-    print(ps.exe())
-    # term = ps.terminal()
-
-    return ps
-
-    # children = current_process.children(recursive=True)  #TODO psutil.Process(find)
-    # for child in children:
-    #     if child.pid == find:
-    #         return child
-
-
-def run_game(path, user):
-    exist = cache.get(user)
-    if exist:
-        running = get_sub_proc(user)
-        running.kill()
-    sp = subprocess.Popen(['python', path],
-                          stdin=subprocess.PIPE,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT,
-                          universal_newlines=True)
-    print("create", sp.pid)
-    cache.set(user, sp.pid, 1200)
-    # вот этот sp
-    # видимо нужно как то сохранять
-    # либо мб сохранять какой нибудь id процесса
-    # и потом этот объект как то заново создавать
-
-    # for i in range(5):
-    #     sp.stdin.write(f'test message {i}' + '\n')
-    #     sp.stdin.flush()
-    #     print(f'answer #{i}:', sp.stdout.readline())
-
-
 @login_required()
 def playing_game_view(request, game_name):
     games = Game.objects.filter(name__startswith=game_name)
@@ -310,25 +244,6 @@ def playing_game_view(request, game_name):
                 'inner_state': state,
             })
             return HttpResponse(data, content_type='json')
-        # else:
-        #     if game_cond == "start":
-        #
-        #         seed()
-        #         # run_game(src, request.user)
-        #         print("run matches for ", request.user)
-        #         # os.system('python '+str(data)+" &")
-        #         data = json.dumps({
-        #             'inner_state': 21,
-        #         })
-        #         return HttpResponse(data, content_type='json')
-        #
-        #     if game_cond == "running":
-        #         state = request.GET.get("inner_state")
-        #
-        #         data = json.dumps({
-        #             'inner_state': state,
-        #         })
-        #         return HttpResponse(data, content_type='json')
     print(this_game.interface)
     return render(request, this_game.interface)
 
