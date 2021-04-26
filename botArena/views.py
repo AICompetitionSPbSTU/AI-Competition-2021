@@ -288,59 +288,47 @@ def playing_game_view(request, game_name):
     this_game = games[0]
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
-        if game_name == "tic_tac_toe":
-            if game_cond == "start":
-                path = 'media/' + this_game.source.name
-                # run_game(path, request.user)
-                print("start tic tac toe", request.user)
-                start = ['-1' for _ in range(9)]
-                seed()
-                data = json.dumps({'inner_state': start})
-                return HttpResponse(data, content_type='json')
-            if game_cond == "running":
-                state = request.GET.get("inner_state")
-                # for sanya
-                # print(state)
-                # child = get_sub_proc(request.user)
-                # child.stdin.write(state)
-                # child.stdin.flush()
-                # state = child.stdout.readline()
-                # print(state)
-                state = state.split(",")
-                while True:
-
-                    bot_choose = randint(0, 8)
-                    if state[bot_choose] == '-1':
-                        state[bot_choose] = '0'
-                        break
-
-                data = json.dumps({
-                    'inner_state': state,
-                })
-                return HttpResponse(data, content_type='json')
-        else:
-            if game_cond == "start":
-                # check_user_already_play(request.user)
-                path = 'media/' + this_game.source.name
-                #run_game(path, request.user)
-                # src = this_game.source.open()
-                seed()
-                # run_game(src, request.user)
-                print("run matches for ", request.user)
-                # os.system('python '+str(data)+" &")
-                data = json.dumps({
-                    'inner_state': 21,
-                })
-                return HttpResponse(data, content_type='json')
-
-            if game_cond == "running":
-                count = request.GET.get("inner_state")
-                bot_choose = randint(1, 3)
-                new_state = int(count) - bot_choose
-                data = json.dumps({
-                    'inner_state': new_state,
-                })
-                return HttpResponse(data, content_type='json')
+        # if game_name == "tic_tac_toe":
+        if game_cond == "start":
+            state = []
+            code = this_game.source.read()
+            print("start tic tac toe", request.user)
+            loc = {}
+            exec(code, {'game_cond': game_cond, "state": state}, loc)
+            state = loc['state']
+            seed()
+            data = json.dumps({'inner_state': state})
+            return HttpResponse(data, content_type='json')
+        if game_cond == "running":
+            state = request.GET.get("inner_state")
+            code = this_game.source.read()
+            print("start tic tac toe", request.user)
+            loc = {}
+            exec(code, {'game_cond': game_cond, "state": state}, loc)
+            state = loc['state']
+            data = json.dumps({
+                'inner_state': state,
+            })
+            return HttpResponse(data, content_type='json')
+        # else:
+        #     if game_cond == "start":
+        #
+        #         seed()
+        #         # run_game(src, request.user)
+        #         print("run matches for ", request.user)
+        #         # os.system('python '+str(data)+" &")
+        #         data = json.dumps({
+        #             'inner_state': 21,
+        #         })
+        #         return HttpResponse(data, content_type='json')
+        #
+        #     if game_cond == "running":
+        #         state = request.GET.get("inner_state")
+        #
+        #         data = json.dumps({
+        #             'inner_state': state,
+        #         })
+        #         return HttpResponse(data, content_type='json')
     print(this_game.interface)
     return render(request, this_game.interface)
 
