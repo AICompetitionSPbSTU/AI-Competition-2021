@@ -11,7 +11,7 @@ StartGame();
 
 function StartRequestGet(){
     const request = new XMLHttpRequest();
-    const url = "/botArena/game/matches/play?game_cond=start";
+    const url = "?game_cond=start";
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
@@ -26,7 +26,7 @@ function StartRequestGet(){
 
 function RequestRunning(inner_state){
     let request = new XMLHttpRequest();
-    const url = "/botArena/game/matches/play?game_cond=running&inner_state=" + inner_state;
+    const url = "?game_cond=running&inner_state=" + inner_state;
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
