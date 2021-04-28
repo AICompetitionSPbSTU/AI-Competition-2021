@@ -7,7 +7,7 @@ class MatchesGame:
         self.state['number'] = 21
         self.bot = bot
 
-    def get_current_state(self):
+    def get_state(self):
         return self.state
 
     def start_game(self):
