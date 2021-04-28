@@ -2,8 +2,6 @@ import ctypes
 import os
 # import boto3
 import json
-import psutil
-import subprocess
 from random import seed, randint
 # from botocore.config import Config
 from django.contrib.auth.models import User
@@ -154,26 +152,68 @@ def sign_s3(request):
 
 @login_required()
 def playground_bot(request, game_name, bot_id):
+    print('playgound_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
-    this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-    print(this_bot.url_source)
-    url = this_bot.url_source
-    result = 0
-    if url:
-        temp_file = NamedTemporaryFile(delete=True)
-        temp_file.write(urlopen(url).read())
-        # print(temp_file.name)
-        # print(urlopen(url).read())
-        temp_file.read()
-        # temp_file.close()
-        with open(temp_file.name, 'r') as f:
-            result = exec(f.read())
-        # result = os.system('python '+temp_file.name)
-        # result = temp_file.read()
-        temp_file.close()
 
-    return render(request, 'botArena/playground.html', {'bot_url': str(url), 'result': result})
+    with open('media/bots_src/matches_mybot.py', 'r') as f:
+        bot_code = f.read()
+
+        game_code = this_game.source.read()
+        
+        loc = {}
+        import math
+        exec(bot_code, {"__builtins__": {'__name__':__name__, 'math': math, '__build_class__': __build_class__}}, loc)
+        bot_class = loc['MyBot'] # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
+
+        loc = {}
+        exec(game_code, None, loc)
+        game_class = loc['MatchesGame']
+
+        bot = bot_class()
+        game = game_class(bot=bot)
+    
+    if request.method == "GET":
+        game_cond = request.GET.get("game_cond")
+        if game_cond == "start":
+            print('game start')
+##            this_bot = this_game.bot_set.filter(pk=bot_id)[0]
+##            url = this_bot.url_source
+            
+##            temp_file = NamedTemporaryFile(delete=True)
+##            temp_file.write(urlopen(url).read())
+##            bot_code = temp_file.read()
+##            temp_file.close()
+
+            state = game.get_state()
+            
+            data = json.dumps({'inner_state': state['number']})
+
+            request.session['game_state'] = game.get_state()
+            
+            return HttpResponse(data, content_type='json')
+        if game_cond == "running":
+            print('game running')
+            state = int(request.GET.get("inner_state"))
+            game = game_class(state=request.session['game_state'], bot=bot)
+
+            user_took = game.get_state()['number'] - state
+
+            print('user took:', user_took)
+
+            game.user_input(number_chosen=user_took)
+            game.bot_move()
+            
+            state = game.get_state()
+            
+
+            print('new state:', state)
+            
+            data = json.dumps({'inner_state': state['number']})
+            
+            return HttpResponse(data, content_type='json')
+    print(this_game.interface)
+    return render(request, this_game.interface)
 
 
 @login_required()
