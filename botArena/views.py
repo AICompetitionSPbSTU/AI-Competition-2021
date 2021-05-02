@@ -155,7 +155,7 @@ def sign_s3(request):
 
 @login_required()
 def playground_bot(request, game_name, bot_id):
-    print('playgound_bot')
+    print('playground_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
 
@@ -167,12 +167,10 @@ def playground_bot(request, game_name, bot_id):
         loc = {}
         import math
         exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__}}, loc)
-        bot_class = loc['MyBot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
-
+        bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
         loc = {}
         exec(game_code, None, loc)
-        game_class = loc['MatchesGame']
-
+        game_class = loc['Game']
         bot = bot_class()
         game = game_class(bot=bot)
 
@@ -197,21 +195,22 @@ def playground_bot(request, game_name, bot_id):
             return HttpResponse(data, content_type='json')
         if game_cond == "running":
             print('game running')
-            state = int(request.GET.get("inner_state"))
+            incoming_state = request.GET.get("inner_state")
             game = game_class(state=request.session['game_state'], bot=bot)
 
-            user_took = game.get_state()['number'] - state
+            # user_took = game.get_state() - int(state)
 
-            print('user took:', user_took)
+            # print('user took:', user_took)
 
-            game.user_input(number_chosen=user_took)
+            game.user_input(user_action=incoming_state)
             game.bot_move()
 
-            state = game.get_state()
+            new_state = game.get_state()
 
-            print('new state:', state)
+            print('new state:', new_state)
 
-            data = json.dumps({'inner_state': state['number']})
+            data = json.dumps({'inner_state': new_state['number']})
+            request.session['game_state'] = new_state
 
             return HttpResponse(data, content_type='json')
     print(this_game.interface)
@@ -263,33 +262,10 @@ def playing_game_view(request, game_name):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     bots = this_game.bot_set.all()
+    if not bots:
+        return HttpResponseRedirect(reverse('botArena:game',args=(game_name,)))
     print(bots)
     i_choose = choice(bots)
-
-    # if request.method == "GET":
-    #     game_cond = request.GET.get("game_cond")
-    #     if game_cond == "start":
-    #         state = []
-    #         code = this_game.source.read()
-    #         print("start tic tac toe", request.user)
-    #         loc = {}
-    #         exec(code, {'game_cond': game_cond, "state": state}, loc)
-    #         state = loc['state']
-    #         seed()
-    #         data = json.dumps({'inner_state': state})
-    #         return HttpResponse(data, content_type='json')
-    #     if game_cond == "running":
-    #         state = request.GET.get("inner_state")
-    #         code = this_game.source.read()
-    #         print("start tic tac toe", request.user)
-    #         loc = {}
-    #         exec(code, {'game_cond': game_cond, "state": state}, loc)
-    #         state = loc['state']
-    #         data = json.dumps({
-    #             'inner_state': state,
-    #         })
-    #         return HttpResponse(data, content_type='json')
-    # print(this_game.interface)
     return HttpResponseRedirect(reverse('botArena:playground', args=(game_name, i_choose.id)))
     # return render(request, this_game.interface)
 

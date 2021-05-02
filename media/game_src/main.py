@@ -1,14 +1,15 @@
 from random import seed, randint
 
 
-class MatchesGame:
+class Game:
 
     def __init__(self, *, bot, state=None):
         if not state:
             self.state = dict()
             self.state['number'] = 21
         else:
-            self.state = state
+            print(state)
+            self.state = state['number']
         self.bot = bot
 
     def get_state(self):
@@ -28,6 +29,7 @@ class MatchesGame:
         self.change_state_matches(matches_number)
         if self.state['number'] != 1:
             self.change_state_turn('bot')
+    #     else win!!!
 
     def change_state_turn(self, player):
         self.state['turn'] = player
@@ -36,8 +38,8 @@ class MatchesGame:
         self.state['number'] = self.state['number'] - matches_number
 
     def user_input(self, **kwargs):
-        if 'number_chosen' in kwargs:
-            self.user_move(kwargs['number_chosen'])
+        if 'user_action' in kwargs:
+            self.user_move(kwargs['user_action'])
         else:
             raise BaseException('You didn`t choose matches number')
 
