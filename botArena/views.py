@@ -88,9 +88,11 @@ def logout_view(request):
 @login_required()
 def game(request, name):
     # Сделать через get object or 4o4?
-    this_game = Game.objects.filter(name__startswith=name)
+    games = Game.objects.filter(name__startswith=name)
+    this_game = games[0]
+    description = this_game.long_description.read()
     # print(this_game)
-    return render(request, 'botArena/game.html', {'game': this_game[0]})
+    return render(request, 'botArena/game.html', {'game': this_game, 'description': description})
 
 
 def registration(request):
