@@ -99,6 +99,7 @@ def registration(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
+        email = request.POST['email']
         # user = authenticate(request, username=username, password=password)
         duplicate_users = User.objects.filter(username=username)
         if not duplicate_users:
@@ -108,7 +109,7 @@ def registration(request):
             if len(password) < 5:
                 err_msg = "Password too short"
                 return render(request, 'botArena/registration.html', {"error_message": err_msg})
-            user = User.objects.create_user(username, 'no_email', password)
+            user = User.objects.create_user(username, email, password)
             user.save()
         else:
             err_msg = "User already exist"
