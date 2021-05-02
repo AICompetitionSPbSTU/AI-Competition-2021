@@ -262,7 +262,6 @@ def playing_game_view(request, game_name):
     this_game = games[0]
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
-        # if game_name == "tic_tac_toe":
         if game_cond == "start":
             state = []
             code = this_game.source.read()
