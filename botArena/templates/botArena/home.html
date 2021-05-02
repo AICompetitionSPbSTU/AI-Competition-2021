@@ -17,8 +17,8 @@
           <li>
             <a href="#">{{ game.name }}</a>
               <div class="right">
-                  <p>{{ game.description }}</p>
-                <a href="{% url 'botArena:game' game.name%}"> Play </a>
+                  <p> {{ game.description }} <br> Best score : {{ game.leader_score }} by {{ game.leader }}</p>
+                <a href="{% url 'botArena:game' game.name %}"> Play </a>
               </div>
           </li>
         {% endfor %}

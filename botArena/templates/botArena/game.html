@@ -12,7 +12,7 @@
 
 {% block content %}
     <h2> {{game.name}} </h2>
-    {{ description }}
+    <div>{{ description }}</div>
     {% if game %}
         <div class="c">
             {%  if game.bot_set.all %}

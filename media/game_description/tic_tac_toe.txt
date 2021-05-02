@@ -1,1 +1,8 @@
-Add description here
+Tic Tac Toe
+Classic game, which everyone played at least one time in childhood.
+
+What the rules?
+You have square playing field 3x3 with cells. Player and bot move in turn. Player's move is 'X', bot's is 'O'. Player moves first always. To win you must fill 3 cells in succession in a row, in a column or diagonally.
+
+How to write a bot?
+Below you can see .txt file with template of bot. Copy it in your .py file and begin to create your own winner. !Remind: bot must be written on Python!

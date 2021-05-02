@@ -7,12 +7,13 @@
 
 {% block content%}
     <div>
-        <input type="file" id="file-input">
-            <form method="post" enctype="multipart/form-data">
+        <form id='form' method="post" enctype="multipart/form-data">
+            <input type="file" id="file-input">
             {% csrf_token %}
-                <div id='hid'>{{ form.as_p }}</div>
-            <input type="submit" value="Upload">  </input>
-            </form>
+            <div id='hid'>{{ form.as_p }}</div>
+            <input id='sub' type="submit" value="Upload">  </input>
+        </form>
+        <div id="err"></div>
     </div>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
@@ -22,6 +23,7 @@
       Function to carry out the actual POST request to S3 using the signed request from the Python app.
       */
     function uploadFile(file, s3Data, url){
+
       const xhr = new XMLHttpRequest();
       xhr.open('POST', s3Data.url);
       xhr.setRequestHeader('x-amz-acl', 'public-read');
@@ -85,13 +87,12 @@
       }
       getSignedRequest(file);
     }
-
     /*
        Bind listeners when the page loads.
     */
     (() => {
         document.getElementById("demo").innerHTML = 12 + 6;
-      document.getElementById('file-input').onchange = initUpload;
+      document.getElementById('sub').onclick = initUpload;
     })();
 
     </script>
