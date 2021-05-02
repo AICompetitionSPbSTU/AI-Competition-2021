@@ -15,16 +15,16 @@
         <ul id="navigation">
         {% for game in game_list %}
           <li>
-            <a href="#">{{ game.name }} 111</a>
-              <div>
-                <h3>{{ game.description }}</h3>
-                  <img src="http://placekitten.com/320/240">
+            <a href="#">{{ game.name }}</a>
+              <div class="right">
+                  <p>{{ game.description }}</p>
+                <a href="{% url 'botArena:game' game.name%}"> Play </a>
               </div>
           </li>
         {% endfor %}
         </ul>
     {% else %}
-        <p>No games are available</p>
+        <p> No games are available </p>
     {% endif %}
 {% endblock %}
 
