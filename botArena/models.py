@@ -31,6 +31,7 @@ class Bot(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
     creator_name = models.CharField(max_length=200)
     result = models.IntegerField(default=0)
+    all_games_count = models.IntegerField(default=1)
     source = models.FileField(upload_to='bots_src/', default='bots_src/none.py')
     url_source = models.URLField(default='https://spbstubotarena.s3.eu-central-1.amazonaws.com/mindfield.txt')
 
