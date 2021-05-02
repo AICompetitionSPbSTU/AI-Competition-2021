@@ -1,4 +1,4 @@
-from random import  randint
+from random import randint
 
 if game_cond == "start":
     state = 21
