@@ -2,7 +2,7 @@ import ctypes
 import os
 # import boto3
 import json
-from random import seed, randint
+from random import seed, randint, choice
 # from botocore.config import Config
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
@@ -262,31 +262,36 @@ def about_view(request):
 def playing_game_view(request, game_name):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
-    if request.method == "GET":
-        game_cond = request.GET.get("game_cond")
-        if game_cond == "start":
-            state = []
-            code = this_game.source.read()
-            print("start tic tac toe", request.user)
-            loc = {}
-            exec(code, {'game_cond': game_cond, "state": state}, loc)
-            state = loc['state']
-            seed()
-            data = json.dumps({'inner_state': state})
-            return HttpResponse(data, content_type='json')
-        if game_cond == "running":
-            state = request.GET.get("inner_state")
-            code = this_game.source.read()
-            print("start tic tac toe", request.user)
-            loc = {}
-            exec(code, {'game_cond': game_cond, "state": state}, loc)
-            state = loc['state']
-            data = json.dumps({
-                'inner_state': state,
-            })
-            return HttpResponse(data, content_type='json')
-    print(this_game.interface)
-    return render(request, this_game.interface)
+    bots = this_game.bot_set.all()
+    print(bots)
+    i_choose = choice(bots)
+
+    # if request.method == "GET":
+    #     game_cond = request.GET.get("game_cond")
+    #     if game_cond == "start":
+    #         state = []
+    #         code = this_game.source.read()
+    #         print("start tic tac toe", request.user)
+    #         loc = {}
+    #         exec(code, {'game_cond': game_cond, "state": state}, loc)
+    #         state = loc['state']
+    #         seed()
+    #         data = json.dumps({'inner_state': state})
+    #         return HttpResponse(data, content_type='json')
+    #     if game_cond == "running":
+    #         state = request.GET.get("inner_state")
+    #         code = this_game.source.read()
+    #         print("start tic tac toe", request.user)
+    #         loc = {}
+    #         exec(code, {'game_cond': game_cond, "state": state}, loc)
+    #         state = loc['state']
+    #         data = json.dumps({
+    #             'inner_state': state,
+    #         })
+    #         return HttpResponse(data, content_type='json')
+    # print(this_game.interface)
+    return HttpResponseRedirect(reverse('botArena:playground', args=(game_name, i_choose.id)))
+    # return render(request, this_game.interface)
 
 # def logout(request):
 #     return render(request, 'botArena/logout.html')
