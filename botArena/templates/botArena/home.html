@@ -5,26 +5,23 @@
     Домашняя страница
 {% endblock %}
 {% block head %}
-{#    <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">#}
-{#    <script src="/static/botArena/js/home.js"></script>#}
+    <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">
+    <script src="/static/botArena/js/home.js"></script>
 {% endblock %}
 
 
 {% block content %}
     {% if game_list %}
-        <ul id="game_list">
-            {% for game in game_list %}
-                <li><a class="myLinkModal" href="{% url 'botArena:game' game.name %}">{{ game.name }}</a></li>
-
-{#                <div id="myModal">#}
-{##}
-{#                      <p> {{ game.description }} <br> Best score : {{ game.leader_score }} by {{ game.leader }}</p>#}
-{#                    <a href="{% url 'botArena:game' game.name %}"> Play </a>#}
-{#                    <a></a>#}
-{#                        <span id="myModal__close" class="close">ₓ</span>#}
-{#                </div>#}
-{#                <div id="myOverlay"></div>#}
-            {% endfor %}
+        <ul id="navigation">
+        {% for game in game_list %}
+          <li>
+            <a href="#">{{ game.name }} 111</a>
+              <div>
+                <h3>{{ game.description }}</h3>
+                  <img src="http://placekitten.com/320/240">
+              </div>
+          </li>
+        {% endfor %}
         </ul>
     {% else %}
         <p>No games are available</p>
