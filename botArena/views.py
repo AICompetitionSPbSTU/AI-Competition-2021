@@ -160,11 +160,11 @@ def playground_bot(request, game_name, bot_id):
         bot_code = f.read()
 
         game_code = this_game.source.read()
-        
+
         loc = {}
         import math
-        exec(bot_code, {"__builtins__": {'__name__':__name__, 'math': math, '__build_class__': __build_class__}}, loc)
-        bot_class = loc['MyBot'] # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
+        exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__}}, loc)
+        bot_class = loc['MyBot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
 
         loc = {}
         exec(game_code, None, loc)
@@ -172,25 +172,25 @@ def playground_bot(request, game_name, bot_id):
 
         bot = bot_class()
         game = game_class(bot=bot)
-    
+
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
         if game_cond == "start":
             print('game start')
-##            this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-##            url = this_bot.url_source
-            
-##            temp_file = NamedTemporaryFile(delete=True)
-##            temp_file.write(urlopen(url).read())
-##            bot_code = temp_file.read()
-##            temp_file.close()
+            ##            this_bot = this_game.bot_set.filter(pk=bot_id)[0]
+            ##            url = this_bot.url_source
+
+            ##            temp_file = NamedTemporaryFile(delete=True)
+            ##            temp_file.write(urlopen(url).read())
+            ##            bot_code = temp_file.read()
+            ##            temp_file.close()
 
             state = game.get_state()
-            
+
             data = json.dumps({'inner_state': state['number']})
 
             request.session['game_state'] = game.get_state()
-            
+
             return HttpResponse(data, content_type='json')
         if game_cond == "running":
             print('game running')
@@ -203,14 +203,13 @@ def playground_bot(request, game_name, bot_id):
 
             game.user_input(number_chosen=user_took)
             game.bot_move()
-            
+
             state = game.get_state()
-            
 
             print('new state:', state)
-            
+
             data = json.dumps({'inner_state': state['number']})
-            
+
             return HttpResponse(data, content_type='json')
     print(this_game.interface)
     return render(request, this_game.interface)

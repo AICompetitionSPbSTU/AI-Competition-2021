@@ -24,7 +24,7 @@
                 <tbody>
                 {% for bot in game.bot_set.all  %}
                     <tr>
-                        <td> <a href="{% url 'botArena:bot' game.name bot.creator_name bot.id %}"> {{ bot.creator_name }} </a> </td>
+                        <td> <a href="{% url 'botArena:playground' game.name  bot.id %}"> {{ bot.creator_name }} </a> </td>
                         <td> {{ bot.result }} </td>
                     </tr>
                 {% endfor %}
