@@ -99,7 +99,7 @@ function ButtonEvent() {
         alert("Choose at least one match");
         return;
     }
-    RequestRunning(state - counter)
+    RequestRunning(counter)
     sleep(500).then(() => {
         if (state === 1) {
             alert('Bot win :(');
