@@ -9,7 +9,7 @@ class Game:
             self.state['number'] = 21
         else:
             print(state)
-            self.state = state['number']
+            self.state = state
         self.bot = bot
 
     def get_state(self):
@@ -35,7 +35,7 @@ class Game:
         self.state['turn'] = player
 
     def change_state_matches(self, matches_number):
-        self.state['number'] = self.state['number'] - matches_number
+        self.state['number'] = self.state['number'] - int(matches_number)
 
     def user_input(self, **kwargs):
         if 'user_action' in kwargs:
