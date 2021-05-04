@@ -159,7 +159,8 @@ def playground_bot(request, game_name, bot_id):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
 
-    with open('media/bots_src/matches_mybot.py', 'r') as f:
+    # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
+    with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
         bot_code = f.read()
 
         game_code = this_game.source.read()
@@ -188,7 +189,7 @@ def playground_bot(request, game_name, bot_id):
 
             state = game.get_state()
 
-            data = json.dumps({'inner_state': state['number']})
+            data = json.dumps({'inner_state': state['field']})
 
             request.session['game_state'] = game.get_state()
 
@@ -209,7 +210,7 @@ def playground_bot(request, game_name, bot_id):
 
             print('new state:', new_state)
 
-            data = json.dumps({'inner_state': new_state['number']})
+            data = json.dumps({'inner_state': new_state['field']})  # 'number'
             request.session['game_state'] = new_state
 
             return HttpResponse(data, content_type='json')
@@ -263,7 +264,7 @@ def playing_game_view(request, game_name):
     this_game = games[0]
     bots = this_game.bot_set.all()
     if not bots:
-        return HttpResponseRedirect(reverse('botArena:game',args=(game_name,)))
+        return HttpResponseRedirect(reverse('botArena:game', args=(game_name,)))
     print(bots)
     i_choose = choice(bots)
     return HttpResponseRedirect(reverse('botArena:playground', args=(game_name, i_choose.id)))
