@@ -155,7 +155,7 @@ def sign_s3(request):
 
 @login_required()
 def playground_bot(request, game_name, bot_id):
-    print('playground_bot')
+    # print('playground_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
 
@@ -191,6 +191,7 @@ def playground_bot(request, game_name, bot_id):
             state = game.get_state()
 
             data = json.dumps({'inner_state': state['field']})
+            print('состояние',state['field'])
 
             request.session['game_state'] = game.get_state()
 
