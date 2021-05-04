@@ -20,7 +20,7 @@ jQuery(function($) {
     var el_l    = $("#login");
     if ( el_l.val().length < 4 ) {
       var v_login = true;
-      el_l.after('<span class="text-error for-login">Логин должен быть больше 3 символов</span>');
+      el_l.after('<span class="text-error for-login">Login must include at least 3 symbols!</span>');
       document.getElementById('login').style.color = "red";
       $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
     }
@@ -36,12 +36,12 @@ jQuery(function($) {
     var v_email = el_e.val()?false:true;
 
     if ( v_email ) {
-      el_e.after('<span class="text-error for-email">Поле e-mail обязательно к заполнению</span>');
+      el_e.after('<span class="text-error for-email">E-mail is required!</span>');
       document.getElementById('email').style.color = "red";
       $(".for-email").css({top: el_e.position().top + el_e.outerHeight() + 2});
     } else if ( !reg.test( el_e.val() ) ) {
       v_email = true;
-      el_e.after('<span class="text-error for-email">Вы указали недопустимый e-mail</span>');
+      el_e.after('<span class="text-error for-email">You put in unacceptable e-mail!</span>');
       document.getElementById('email').style.color = "red";
       $(".for-email").css({top: el_e.position().top + el_e.outerHeight() + 2});
     }
@@ -61,14 +61,14 @@ jQuery(function($) {
     if ( el_p1.val() != el_p2.val() ) {
       var v_pass1 = true;
       var v_pass2 = true;
-      el_p1.after('<span class="text-error for-pass1">Пароли не совпадают!</span>');
+      el_p1.after('<span class="text-error for-pass1">Password mismatch!</span>');
       document.getElementById('pass1').style.color = "red";
         document.getElementById('pass2').style.color = "red";
       $(".for-pass1").css({top: el_p1.position().top + el_p1.outerHeight() + 2});
     } else if ( el_p1.val().length < 6 ) {
       var v_pass1 = true;
       var v_pass2 = true;
-      el_p1.after('<span class="text-error for-pass1">Пароль должен быть не менее 6 символов</span>');
+      el_p1.after('<span class="text-error for-pass1">Password must include at least 6 symbols!</span>');
       document.getElementById('pass1').style.color = "red";
       document.getElementById('pass2').style.color = "red";
       $(".for-pass1").css({top: el_p1.position().top + el_p1.outerHeight() + 2});
