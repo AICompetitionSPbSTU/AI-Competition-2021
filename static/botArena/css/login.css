@@ -22,8 +22,9 @@ h1 {
 
   color: #fff; text-shadow: 0 0 10px rgb(224, 18, 224); letter-spacing:1px; text-align:center; }
 
-input { 
-  width: 100%; 
+input {
+  box-sizing:border-box;
+  width: 50%;
   margin-bottom: 10px;
   border: none;
   outline: none;
@@ -37,3 +38,11 @@ input {
   transition: box-shadow .5s ease;
 }
 input:focus { box-shadow: inset 0 -5px 45px rgba(100,100,100,0.4), 0 1px 1px rgb(230, 208, 236); }
+
+.form__wrapper{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
