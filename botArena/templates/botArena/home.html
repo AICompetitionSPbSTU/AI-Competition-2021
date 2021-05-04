@@ -9,8 +9,41 @@
     <script src="/static/botArena/js/home.js"></script>
 {% endblock %}
 
+{% block nav %}
+    {% if request.user.is_staff %}
+        <a href="{% url 'botArena:new_game' %}"><b> Load game </b></a>
+    {% elif request.user.is_authenticated %}
+
+    {% else %}
+        <a href="{% url 'botArena:login' %}">  Login  </a>
+        <a onclick="document.getElementById('id01').style.display='block'"> New login</a>
+    {% endif %}
+
+{% endblock %}
 
 {% block content %}
+    <div id="id01" class="modal">
+        <div class="container">
+           <form method="post" action="{% url 'botArena:login' %}" class="modal-content animate" id="register">
+              <h1>Login</h1>
+                   {% csrf_token %}
+              <div class="fields">
+                 <input type="text" name="username" id="login" value="" placeholder="username">
+                 <span class="dot">*</span>
+              </div>
+              <div class="fields">
+                 <input type="password" name="password" id="pass1" value="" placeholder="password" >
+                 <span class="dot">*</span>
+              </div>
+              <button type="submit" name="button" id="send"> Sign up </button>
+           </form>
+
+          <span onclick="document.getElementById('id01').style.display='none'"
+            class="close" title="Закрыть модальный">&times;</span>
+        </div>
+    </div>
+
+
     {% if game_list %}
         <ul id="navigation">
         {% for game in game_list %}
@@ -28,13 +61,3 @@
     {% endif %}
 {% endblock %}
 
-{% block nav %}
-    {% if request.user.is_staff %}
-        <a href="{% url 'botArena:new_game' %}"><b> Load game </b></a>
-    {% elif request.user.is_authenticated %}
-
-    {% else %}
-       <a href="{% url 'botArena:login' %}">  Login  </a>
-    {% endif %}
-
-{% endblock %}
