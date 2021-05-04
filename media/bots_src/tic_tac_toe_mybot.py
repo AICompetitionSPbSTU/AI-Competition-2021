@@ -1,4 +1,3 @@
-from random import randint
 
 
 class Bot:

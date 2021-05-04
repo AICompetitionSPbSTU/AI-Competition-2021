@@ -167,7 +167,8 @@ def playground_bot(request, game_name, bot_id):
 
         loc = {}
         import math
-        exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__}}, loc)
+        exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
+                                         'randint':randint}}, loc)
         bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
         loc = {}
         exec(game_code, None, loc)
