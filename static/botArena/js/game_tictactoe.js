@@ -3,9 +3,10 @@ let botMove = false;
 const user = "X";
 const bot = "O";
 const button = document.querySelector(".nextStep");
-let state = Array(9).fill('-1');
+let state = Array(9).fill(-1);
 let occupied = Array(9).fill(false);
 let counter = 0;
+let choosed = -1;
 const winCombos = [
   [0, 1, 2],
   [3, 4, 5],
@@ -24,7 +25,7 @@ startGame();
 
 function StartRequestGet(){
     const request = new XMLHttpRequest();
-    const url = "/botArena/game/tic_tac_toe/play?game_cond=start";
+    const url = "?game_cond=start";
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
@@ -39,7 +40,7 @@ function StartRequestGet(){
 
 function RequestRunning(inner_state){
     let request = new XMLHttpRequest();
-    const url = "/botArena/game/tic_tac_toe/play?game_cond=running&inner_state=" + inner_state;
+    const url = "?game_cond=running&inner_state=" + inner_state;
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
@@ -83,10 +84,10 @@ function CheckWin(){
     let indexesO = Array();
     let indexesX = Array();
     for (let i = 0; i < state.length; i++) {
-        if (state[i] === '0') {
+        if (state[i] === 0) {
             indexesO.push(i);
         }
-        if (state[i] === '1') {
+        if (state[i] === 1) {
             indexesX.push(i)
         }
     }
@@ -111,9 +112,10 @@ function turnClick() {
         if (counter === 1) {
             document.getElementById(this.id).innerText = user;
             document.getElementById(this.id).style.pointerEvents = 'none';
-            state[this.id] = '1';
+            state[this.id] = 1;
             occupied[this.id] = true;
             buttonEvent = true;
+            choosed = this.id;
             CheckWin();
         }
         else {
@@ -146,7 +148,7 @@ function ButtonEvent(){
     }
     else{
         counter = 0;
-        RequestRunning(state);
+        RequestRunning(choosed  );
         Sleep(500).then(() => {
             ImagineClick();
         });
@@ -160,7 +162,7 @@ function ImagineClick(){
     console.log('imagine click');
     botMove = true;
     for (let i = 0; i < state.length; i++) {
-        if (state[i] === '0' && occupied[i] === false) {
+        if (state[i] === 0 && occupied[i] === false) {
             cells[i].click();
             return;
         }
