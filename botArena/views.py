@@ -91,7 +91,11 @@ def game(request, name):
     # Сделать через get object or 4o4?
     games = Game.objects.filter(name__startswith=name)
     this_game = games[0]
-    description = this_game.long_description.read()
+    all_text = ""
+    with open('media/' + str(this_game.long_description), 'r') as txt:
+        lines = txt.readlines()
+        all_text = "".join(lines)
+    description = all_text  # this_game.long_description.read()
     # print(this_game)
     return render(request, 'botArena/game.html', {'game': this_game, 'description': description})
 
