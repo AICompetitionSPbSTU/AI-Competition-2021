@@ -158,9 +158,20 @@ def playground_bot(request, game_name, bot_id):
     # print('playground_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
+    this_bot = this_game.bot_set.filter(pk=bot_id)[0]
+    if not os.path.exists(this_bot.source):  # upload bot if we dont have prev temp file
+        url = this_bot.url_source
+        temp_file = NamedTemporaryFile(delete=False)
+        temp_file.write(urlopen(url).read())
+        # bot_code = temp_file.read()
+        this_bot.source = temp_file.name
+        temp_file.close()
+
+    working_source = this_bot.source
 
     # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
-    with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
+    # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
+    with open(working_source, 'r') as f:
         bot_code = f.read()
 
         game_code = this_game.source.read()
@@ -168,19 +179,17 @@ def playground_bot(request, game_name, bot_id):
         loc = {}
         import math
         exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
-                                         'randint':randint}}, loc)
+                                         'randint': randint}}, loc)
         bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
         loc = {}
         exec(game_code, None, loc)
         game_class = loc['Game']
         bot = bot_class()
         game = game_class(bot=bot)
-
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
         if game_cond == "start":
             print('game start')
-            ##            this_bot = this_game.bot_set.filter(pk=bot_id)[0]
             ##            url = this_bot.url_source
 
             ##            temp_file = NamedTemporaryFile(delete=True)
@@ -191,7 +200,7 @@ def playground_bot(request, game_name, bot_id):
             state = game.get_state()
 
             data = json.dumps({'inner_state': state['field']})
-            print('состояние',state['field'])
+            print('состояние', state['field'])
 
             request.session['game_state'] = game.get_state()
 
