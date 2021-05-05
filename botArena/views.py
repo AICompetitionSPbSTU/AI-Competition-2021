@@ -169,6 +169,7 @@ def playground_bot(request, game_name, bot_id):
         temp_file.close()
 
     working_source = str(this_bot.source)
+    print(working_source)
 
     # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
     # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
