@@ -37,6 +37,20 @@ function StartRequestGet(){
     request.send('start');
 }
 
+function FinishRequestGet(){
+    const request = new XMLHttpRequest();
+    const url = "?game_cond=finish";
+    request.open('GET', url);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-url');
+    request.addEventListener("readystatechange", () => {
+	    if (request.readyState === 4 && request.status === 200) {
+	        const response = JSON.parse(request.responseText);
+	        state = response.inner_state;
+        }
+    });
+    request.send('start');
+}
+
 
 function RequestRunning(inner_state){
     let request = new XMLHttpRequest();
@@ -93,14 +107,17 @@ function CheckWin(){
     }
     if (Check(indexesO) === true){
         alert("Bot win :(");
+        FinishRequestGet();
         window.location.reload();
     }
     else if (Check(indexesX) === true){
         alert("You win :)");
+        FinishRequestGet()
         window.location.reload();
     }
     if(occupied.every((elem) => elem === true)){
         alert("It's a draw!");
+        FinishRequestGet()
         window.location.reload();
     }
 }
