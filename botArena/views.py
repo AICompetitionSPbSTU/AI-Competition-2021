@@ -176,7 +176,7 @@ def playground_bot(request, game_name, bot_id):
     # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
     with open(working_source, 'r') as f:
         bot_code = f.read()
-
+        f.close()
         game_code = this_game.source.read()
 
         loc = {}
