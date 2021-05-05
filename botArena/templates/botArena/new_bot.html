@@ -92,7 +92,7 @@
        Bind listeners when the page loads.
     */
     (() => {
-        document.getElementById("demo").innerHTML = 12 + 6;
+        {#document.getElementById("demo").innerHTML = 12 + 6;#}
       document.getElementById('file-input').onchange = initUpload;
     })();
 
