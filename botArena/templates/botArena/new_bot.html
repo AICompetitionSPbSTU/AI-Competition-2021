@@ -41,7 +41,7 @@
             document.getElementById("id_url_source").value = url;
           }
           else{
-              document.getElementById("demo").innerHTML = xhr.status;
+              {#document.getElementById("demo").innerHTML = xhr.status;#}
             alert('Could not upload file.'+xhr.status);
           }
         }
@@ -79,10 +79,9 @@
        start upload procedure by asking for a signed request from the app.
     */
     function initUpload(){
-        alert("errorr")
       const files = document.getElementById('file-input').files;
       const file = files[0];
-      document.getElementById("demo").innerHTML = 5 + 6;
+      {#document.getElementById("demo").innerHTML = 5 + 6;#}
       if(!file){
         return alert('No file selected.');
       }
