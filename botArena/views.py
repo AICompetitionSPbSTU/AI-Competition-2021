@@ -159,7 +159,7 @@ def playground_bot(request, game_name, bot_id):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
     this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-    if not os.path.exists(this_bot.source):  # upload bot if we dont have prev temp file
+    if not os.path.exists(str(this_bot.source)):  # upload bot if we dont have prev temp file
         url = this_bot.url_source
         temp_file = NamedTemporaryFile(delete=False)
         temp_file.write(urlopen(url).read())
@@ -167,7 +167,7 @@ def playground_bot(request, game_name, bot_id):
         this_bot.source = temp_file.name
         temp_file.close()
 
-    working_source = this_bot.source
+    working_source = str(this_bot.source)
 
     # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
     # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
