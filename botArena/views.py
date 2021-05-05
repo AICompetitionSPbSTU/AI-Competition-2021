@@ -170,7 +170,7 @@ def playground_bot(request, game_name, bot_id):
         temp_file.close()
 
     working_source = str(this_bot.source)
-    print(working_source)
+    # print(working_source)
 
     # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
     # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
@@ -181,9 +181,9 @@ def playground_bot(request, game_name, bot_id):
 
         loc = {}
         import math
-        print(bot_code)
+        # print(bot_code)
         exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
-                                         'randint': randint}}, loc)
+                                         'randint': randint}, 'range': range}, loc)
         bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
         loc = {}
         exec(game_code, None, loc)
