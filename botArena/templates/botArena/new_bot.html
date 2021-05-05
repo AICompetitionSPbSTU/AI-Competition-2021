@@ -10,7 +10,7 @@
         <form id='form' method="post" enctype="multipart/form-data">
             <input type="file" id="file-input">
             {% csrf_token %}
-            {{ form.as_p }}
+            <div id='hid'>{{ form.as_p }}</div>
             <input id='sub' type="submit" value="Upload">  </input>
         </form>
         <div id="err"></div>
@@ -92,7 +92,7 @@
     */
     (() => {
         document.getElementById("demo").innerHTML = 12 + 6;
-      document.getElementById('sub').onclick = initUpload;
+      document.getElementById('file-input').onchange = initUpload;
     })();
 
     </script>

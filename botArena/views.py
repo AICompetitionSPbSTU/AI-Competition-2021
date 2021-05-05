@@ -122,6 +122,7 @@ def registration(request):
 
 @login_required()
 def sign_s3(request):
+    print("YOU WANT SOME KEYS???")
     S3_BUCKET = os.environ.get('S3_BUCKET')  # heroku
     # S3_BUCKET = "spbstubotarena"
     # print(request)
