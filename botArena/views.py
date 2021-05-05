@@ -151,6 +151,7 @@ def sign_s3(request):
         'data': presigned_post,
         'url': path_url + file_name,
     })
+    print(data)
     return HttpResponse(data, content_type='json')
 
 
