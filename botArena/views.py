@@ -2,6 +2,7 @@ import ctypes
 import os
 # import boto3
 import json
+from builtins import __build_class__
 from random import seed, randint, choice
 # from botocore.config import Config
 from django.contrib.auth.models import User
@@ -170,8 +171,8 @@ def playground_bot(request, game_name, bot_id):
     working_source = str(this_bot.source)
 
     # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
-    # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
-    with open(working_source, 'r') as f:
+    with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
+    # with open(working_source, 'r') as f:
         bot_code = f.read()
 
         game_code = this_game.source.read()
