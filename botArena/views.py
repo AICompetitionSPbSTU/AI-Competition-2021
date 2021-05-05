@@ -1,10 +1,10 @@
 import ctypes
 import os
-# import boto3
+import boto3
 import json
 from builtins import __build_class__
 from random import seed, randint, choice
-# from botocore.config import Config
+from botocore.config import Config
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
