@@ -28,6 +28,7 @@ urlpatterns = [
         template_name='botArena/password_reset_done.html'), name='password_reset_done'),
     path('password_reset_complete/', auth_views.PasswordResetCompleteView.as_view(
         template_name='botArena/password_reset_complete.html'), name='password_reset_complete'),
+    path('download_bot/<str:game_name>/', views.download_bot, name='download_bot'),
 
 ]
 

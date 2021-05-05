@@ -242,6 +242,16 @@ def bot_view(request, game_name, creator_name, id):
 
 
 @login_required()
+def download_bot(request, game_name):
+    # content = open("botArena/templates/botArena/" + str(game_name) + "_bot.py").read()
+    # return HttpResponse(content, content_type='text/plain', filename='example_bot_code.txt')
+    response = HttpResponse(open("botArena/templates/botArena/" + str(game_name) + "_bot.py", 'rb').read())
+    response['Content-Type'] = 'text/plain'
+    response['Content-Disposition'] = 'attachment; filename=example_bot.py'
+    return response
+
+
+@login_required()
 def creating_bot_view(request, name):
     # if not request.user.is_authenticated:
     #     return HttpResponseRedirect(reverse('botArena:login', args=()))
