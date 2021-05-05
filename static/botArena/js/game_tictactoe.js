@@ -37,9 +37,9 @@ function StartRequestGet(){
     request.send('start');
 }
 
-function FinishRequestGet(){
+function FinishRequestGet(winner){
     const request = new XMLHttpRequest();
-    const url = "?game_cond=finish";
+    const url = "?game_cond=finish=" + winner;
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
@@ -107,17 +107,17 @@ function CheckWin(){
     }
     if (Check(indexesO) === true){
         alert("Bot win :(");
-        FinishRequestGet();
+        FinishRequestGet('bot');
         window.location.reload();
     }
     else if (Check(indexesX) === true){
         alert("You win :)");
-        FinishRequestGet()
+        FinishRequestGet('user');
         window.location.reload();
     }
     if(occupied.every((elem) => elem === true)){
         alert("It's a draw!");
-        FinishRequestGet()
+        FinishRequestGet('draw')
         window.location.reload();
     }
 }

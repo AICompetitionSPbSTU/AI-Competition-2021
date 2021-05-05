@@ -23,9 +23,9 @@ function StartRequestGet(){
     request.send('start');
 }
 
-function FinishRequestGet(){
+function FinishRequestGet(winner){
     const request = new XMLHttpRequest();
-    const url = "?game_cond=finish";
+    const url = "?game_cond=finish=" + winner;
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
@@ -117,25 +117,25 @@ function ButtonEvent() {
     sleep(500).then(() => {
         if (state === 1) {
             alert('Bot win :(');
-            FinishRequestGet();
+            FinishRequestGet('bot');
             window.location.reload();
         }
         else if (state === 0)
         {
             alert('You win!')
-            FinishRequestGet();
+            FinishRequestGet('user');
             window.location.reload();
         }
         else if (state < 0) {
             if (globalCounter === 21){
                 alert('Bot win :(')
-                FinishRequestGet();
+                FinishRequestGet('bot');
                 window.location.reload();
                 return;
             }
             else {
                 alert('You win!')
-                FinishRequestGet();
+                FinishRequestGet('user');
                 window.location.reload();
                 return;
             }
