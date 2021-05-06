@@ -234,6 +234,7 @@ def playground_bot(request, game_name, bot_id):
             return HttpResponse(data, content_type='json')
         if game_cond == 'finish':
             winner = request.GET.get('winner')
+            print(winner)
             if winner == 'bot':
                 this_bot.result += 1
             this_bot.all_game_count += 1
