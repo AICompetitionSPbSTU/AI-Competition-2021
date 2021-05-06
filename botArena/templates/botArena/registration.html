@@ -11,26 +11,39 @@
     {% if error_message %}
     <strong>{{ error_message }} </strong>
 {% endif %}
+          <h1>Registration</h1>
+
 <div class="form__wrapper">
        <form method="post" action="{% url 'botArena:registration' %}" id="register">
-      <h1>Registration</h1>
            {% csrf_token %}
       <div class="fields">
          <input type="text" name="username" id="login" value="" placeholder="username">
          <span class="dot">*</span>
       </div>
+           <div class ='error' id='login_err'>
+               Login must include at least 3 symbols!
+           </div>
       <div class="fields">
          <input type="text" name="email" id="email" value="" placeholder="youmail@domain.ru">
          <span class="dot">*</span>
       </div>
+           <div class ='error' id='email_err'>
+               E-mail is required!
+           </div>
       <div class="fields">
          <input type="password" name="password" id="pass1" value="" placeholder="password" >
          <span class="dot">*</span>
       </div>
+           <div class ='error' id='error_password'>
+               Password must include at least 6 symbols!
+           </div>
       <div class="fields">
          <input type="password" id="pass2" value="" placeholder="repeat password" >
          <span class="dot">*</span>
       </div>
+           <div class ='error' id='mismatch'>
+               Password mismatch!
+           </div>
       <button type="submit" name="button" id="send"> Sign up </button>
 
    </form>
