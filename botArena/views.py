@@ -277,19 +277,23 @@ def creating_bot_view(request, name):
         post_values['url_source'] = request.POST['url_source']
         post_values['game'] = this_game[0]
         post_values['creator_name'] = request.user.username
-        form = BotForm(post_values, request.FILES)
-        print(form)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Committee Podcast Was Created',
-                             "alert alert-success alert-dismissible")
-            # return HttpResponseRedirect(reverse('botArena:home', args=()))
-
-        # Если форма не валидная
-        else:
-            form = BotForm()
-            return render(request, 'botArena/new_game.html', {'game_name': name, 'form': form, 'error_message': "Error "
-                                                                                                                "occurs"})
+        bot = Bot.objects.create_bot(game=this_game[0], creator_name=request.user.username,
+                                     url_source=request.POST['url_source'])
+        bot.save()
+        return HttpResponseRedirect(reverse('botArena:game', args=name))
+        # form = BotForm(post_values, request.FILES)
+        # print(form)
+        # if form.is_valid():
+        #     form.save()
+        #     messages.success(request, 'Committee Podcast Was Created',
+        #                      "alert alert-success alert-dismissible")
+        #     # return HttpResponseRedirect(reverse('botArena:home', args=()))
+        #
+        # # Если форма не валидная
+        # else:
+        #     form = BotForm()
+        #     return render(request, 'botArena/new_game.html', {'game_name': name, 'form': form, 'error_message': "Error "
+        #                                                                                                         "occurs"})
     form = BotForm()
 
     return render(request, 'botArena/new_bot.html', {'game_name': name, 'form': form, })
