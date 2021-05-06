@@ -9,8 +9,9 @@
     <div>
         <form id='form' method="post" enctype="multipart/form-data">
             <input type="file" id="file-input">
+            <p hidden><input type="url" name="url_source" id="url_source" value="" placeholder="username"></p>
             {% csrf_token %}
-            <div id='hid'>{{ form.as_p }}</div>
+{#            <div id='hid'>{{ form.as_p }}</div>#}
             <input id='sub' type="submit" value="Upload">  </input>
         </form>
         <div id="err"></div>
@@ -38,7 +39,7 @@
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             //ocument.getElementById('preview').src = url;
-            document.getElementById("id_url_source").value = url;
+            document.getElementById("url_source").value = url;
           }
           else{
               {#document.getElementById("demo").innerHTML = xhr.status;#}
