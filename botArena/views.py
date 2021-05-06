@@ -196,6 +196,7 @@ def playground_bot(request, game_name, bot_id):
     game = game_class(bot=bot)
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
+        print("game_cond", game_cond)
         if game_cond == "start":
             print('game start')
             ##            url = this_bot.url_source
