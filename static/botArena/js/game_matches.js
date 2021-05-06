@@ -25,7 +25,7 @@ function StartRequestGet(){
 
 function FinishRequestGet(winner){
     const request = new XMLHttpRequest();
-    const url = "?game_cond=finish=" + winner;
+    const url = "?game_cond=finish&winner=" + winner;
     request.open('GET', url);
     request.setRequestHeader('Content-Type', 'application/x-www-form-url');
     request.addEventListener("readystatechange", () => {
