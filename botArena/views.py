@@ -280,7 +280,7 @@ def creating_bot_view(request, name):
         bot = Bot(game=this_game[0], creator_name=request.user.username,
                   url_source=request.POST['url_source'])
         bot.save()
-        return HttpResponseRedirect(reverse('botArena:game', args=name))
+        return HttpResponseRedirect(reverse('botArena:game', args=(name,)))
         # form = BotForm(post_values, request.FILES)
         # print(form)
         # if form.is_valid():
