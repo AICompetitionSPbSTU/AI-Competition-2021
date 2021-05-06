@@ -239,7 +239,7 @@ def playground_bot(request, game_name, bot_id):
             if winner == 'bot':
                 this_bot.result += 1
             this_bot.all_game_count += 1
-
+    this_bot.save()
     print(this_game.interface)
     return render(request, this_game.interface)
 
