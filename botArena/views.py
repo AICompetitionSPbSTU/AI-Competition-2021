@@ -241,6 +241,10 @@ def playground_bot(request, game_name, bot_id):
             # print(winner)
             if winner == 'bot':
                 this_bot.result = 1 + this_bot.result
+                if this_game.leader_score < this_bot.result:
+                    this_game.leader_score = this_bot.result
+                    this_game.leader = this_bot.creator_name
+                    this_game.save()
                 this_bot.save()
             this_bot.all_games_count = 1 + this_bot.all_game_count
             this_bot.save()
