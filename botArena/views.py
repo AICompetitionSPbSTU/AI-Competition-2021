@@ -274,6 +274,7 @@ def creating_bot_view(request, name):
     if request.method == "POST":
         # print(request.POST)
         post_values = request.POST.copy()
+        post_values['url_source'] = request.POST['url_source']
         post_values['game'] = this_game[0]
         post_values['creator_name'] = request.user.username
         form = BotForm(post_values, request.FILES)

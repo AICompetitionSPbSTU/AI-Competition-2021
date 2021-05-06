@@ -9,7 +9,7 @@
     <div>
         <form id='form' method="post" enctype="multipart/form-data">
             <input type="file" id="file-input">
-            <p hidden><input type="url" name="url_source" id="url_source" value="" placeholder="username"></p>
+            <p hidden><input type="url" name="url_source" id="url_source" value="" ></p>
             {% csrf_token %}
 {#            <div id='hid'>{{ form.as_p }}</div>#}
             <input id='sub' type="submit" value="Upload">  </input>
