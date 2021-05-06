@@ -233,7 +233,9 @@ def playground_bot(request, game_name, bot_id):
             request.session['game_state'] = new_state
 
             return HttpResponse(data, content_type='json')
-        if game_cond == 'finish':
+
+        if game_cond == "finish":
+            print("THE END")
             winner = request.GET.get('winner')
             print(winner)
             if winner == 'bot':
