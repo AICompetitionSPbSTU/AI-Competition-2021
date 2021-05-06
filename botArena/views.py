@@ -170,7 +170,7 @@ def playground_bot(request, game_name, bot_id):
         temp_file = NamedTemporaryFile(delete=False)
         temp_file.write(urlopen(url).read())
         # bot_code = temp_file.read()
-        this_bot.source = temp_file.name
+        this_bot.source = str(temp_file.name)
         temp_file.close()
 
     working_source = str(this_bot.source)
