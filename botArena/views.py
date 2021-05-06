@@ -196,7 +196,7 @@ def playground_bot(request, game_name, bot_id):
     game = game_class(bot=bot)
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
-        print("game_cond", game_cond)
+        # print("game_cond", game_cond)
         if game_cond == "start":
             print('game start')
             ##            url = this_bot.url_source
@@ -236,12 +236,12 @@ def playground_bot(request, game_name, bot_id):
             return HttpResponse(data, content_type='json')
 
         if game_cond == "finish":
-            print("THE END")
+            # print("THE END")
             winner = request.GET.get('winner')
-            print(winner)
+            # print(winner)
             if winner == 'bot':
                 this_bot.result = 1 + this_bot.result
-            this_bot.all_game_count = 1 + this_bot.all_game_count
+            this_bot.all_games_count = 1 + this_bot.all_game_count
     this_bot.save()
     # print(this_game.interface)
     return render(request, this_game.interface)
