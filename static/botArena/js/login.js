@@ -1,5 +1,5 @@
 jQuery(function($) {
-  $('#register').on('submit', function(event) {
+  $('#login_form').on('submit', function(event) {
     if ( validateForm() ) { // если есть ошибки возвращает true
 
       event.preventDefault();
