@@ -92,7 +92,7 @@ def logout_view(request):
     return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
-@login_required()
+# @login_required()
 def game(request, name):
     # Сделать через get object or 4o4?
     games = Game.objects.filter(name__startswith=name)
