@@ -7,7 +7,7 @@ urlpatterns = [
     # ex: /botArena/
     path('', views.home, name='home'),
     path('login/', auth_views.LoginView.as_view(
-        template_name='botArena/login.html', get_success_url=lambda: reverse('botArena:home', args=())), name="login"),
+        template_name='botArena/home.html', get_success_url=lambda: reverse('botArena:home', args=())), name="login"),
     path('logout/', views.logout_view, name='logout'),
     path('registration/', views.registration, name='registration'),
     path('game/<str:name>', views.game, name='game'),
