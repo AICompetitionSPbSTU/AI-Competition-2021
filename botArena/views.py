@@ -30,7 +30,7 @@ def logging_test(request):
     if request.GET:
         next_to = request.GET['next']
     # print(next_to)
-    game_list = Game.objects.order_by('-name')
+    game_list = Game.objects.order_by('-name')[:7]
     context = {'game_list': game_list, 'next': next_to}
     if request.method == 'POST':
         username = request.POST['username']
@@ -45,8 +45,10 @@ def logging_test(request):
                 return HttpResponseRedirect(next_to)
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
-            return render(request, 'botArena/login.html', context)
-    return render(request, 'botArena/login.html', context)
+            # return render(request, 'botArena/login.html', context)
+            return HttpResponseRedirect(reverse('botArena:home', args=()))
+    return HttpResponseRedirect(reverse('botArena:home', args=()))
+    # return render(request, 'botArena/login.html', context)
 
 
 @login_required()
@@ -83,7 +85,8 @@ def home(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('botArena:login'))
+    # return HttpResponseRedirect(reverse('botArena:login'))
+    return HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
@@ -110,18 +113,23 @@ def registration(request):
         if not duplicate_users:
             if len(username) > 50:
                 err_msg = "User name is too long"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return HttpResponseRedirect(reverse('botArena:home', args=()))
             if len(password) < 5:
                 err_msg = "Password too short"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
             user = User.objects.create_user(username, email, password)
             user.save()
         else:
             err_msg = "User already exist"
-            return render(request, 'botArena/registration.html', {"error_message": err_msg})
-        return render(request, 'botArena/login.html')
+            return HttpResponseRedirect(reverse('botArena:home', args=()))
+            # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+        # return render(request, 'botArena/login.html')
+        return HttpResponseRedirect(reverse('botArena:home', args=()))
 
-    return render(request, 'botArena/registration.html')
+    # return render(request, 'botArena/registration.html')
+    return HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
