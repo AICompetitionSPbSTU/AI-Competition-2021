@@ -119,28 +119,21 @@ window.onclick = function(event) {
 // LOGIN VALIDATION
 
 jQuery(function($) {
-  $('#login_form').on('submit', function(event) {
-    if ( validateForm() ) { // если есть ошибки возвращает true
 
-      event.preventDefault();
-      $( "send" ).effect("shake");
-
-    }});
-
-
-  $('#login_form').on('input', function (event) {
-      validateLoginForm()
-  });
-
-
-  function validateLoginForm() {
+    function validateLoginForm() {
     $(".text-error").remove();
 
     // Проверка логина
     var el_l = $("#login");
-    if ( el_l.val().length < 4 ) {
+    if ( el_l.val().length < 3 ) {
       var v_login = true;
-      el_l.after('<span class="text-error for-login">Логин должен быть больше 3 символов</span>');
+      el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short</span>');
+      document.getElementById('login').style.color = "red";
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+    }
+    else if ( el_l.val().length > 16 ) {
+      var v_login = true;
+      el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too long</span>');
       document.getElementById('login').style.color = "red";
       $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
     }
@@ -153,10 +146,10 @@ jQuery(function($) {
 
     var v_pass1 = !el_p1.val();
 
-    if ( el_p1.val().length < 6 ) {
-      var v_pass2 = true;
-      document.getElementById('pass').style.color = "red";
-      document.getElementById('log_error_password').style.color = 'black';
+    if ( el_p1.val().length < 8 ) {
+        el_p1.after('<br class="text-error for-login"> <span class="text-error for-login"> Password is too short</span>');
+        document.getElementById('pass').style.color = "red";
+        $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
 
     }
     else {
@@ -166,8 +159,19 @@ jQuery(function($) {
 
     $("#pass").toggleClass('error', v_pass1 );
 
-    return ( v_login || v_pass1 || v_pass2 );
+    return ( v_login || v_pass1);
   }
+
+  $('#login_form').on('submit', function(event) {
+    if ( validateLoginForm() ) { // если есть ошибки возвращает true
+      event.preventDefault();
+      $( ".send" ).after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short </span>');
+
+    }});
+
+  $('#login_form').on('input', function (event) {
+      validateLoginForm()
+  });
 
 })
 
@@ -177,8 +181,8 @@ jQuery(function($) {
   $('#register').on('submit', function(event) {
     if ( validateForm() ) { // если есть ошибки возвращает true
 
-      event.preventDefault();
-      $( "send" ).effect("shake");
+      // event.preventDefault();
+      // $( "send" ).effect("shake");
 
     }});
 
@@ -187,21 +191,20 @@ jQuery(function($) {
       validateForm()
   });
 
-
   function validateForm() {
     $(".text-error").remove();
 
     // Проверка логина
     var el_l    = $("#login_in_reg");
     if ( el_l.val().length < 4 ) {
-      var v_login = true;
+        var v_login = true;
       document.getElementById('login_in_reg').style.color = "red";
       document.getElementById('login_in_reg_err').style.color = 'black';
     }
-    else{
+    else {
+        var v_login = true;
         document.getElementById('login_in_reg').style.color = "blue";
         document.getElementById('login_in_reg_err').style.color = 'transparent';
-
     }
     $("#login").toggleClass('error', v_login );
 
@@ -225,9 +228,8 @@ jQuery(function($) {
 
     }
     else{
-              document.getElementById('email').style.color = "blue";
-              document.getElementById('email_err').style.color = 'transparent';
-
+      document.getElementById('email').style.color = "blue";
+      document.getElementById('email_err').style.color = 'transparent';
     }
     $("#email").toggleClass('error', v_email );
 
@@ -266,8 +268,6 @@ jQuery(function($) {
         document.getElementById('pass2').style.color = "blue";
         document.getElementById('error_password').style.color = 'transparent';
         document.getElementById('mismatch').style.color = 'transparent';
-
-
     }
 
     $("#pass1").toggleClass('error', v_pass1 );
@@ -275,5 +275,4 @@ jQuery(function($) {
 
     return ( v_login || v_email || v_pass1 || v_pass2 );
   }
-
 })

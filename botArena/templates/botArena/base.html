@@ -27,14 +27,14 @@
            </div>
        </div>
 
-       <ul class="container">
+        <ul class="container">
 
             {% block nav %}{% endblock %}
-           {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated %}
                 <a href="{% url 'botArena:logout' %}">  Logout  </a>
-           {% endif %}
+            {% endif %}
 
-       </ul>
+        </ul>
 
      </header>
 

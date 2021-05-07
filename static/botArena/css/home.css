@@ -91,3 +91,7 @@ li.active div {
   from {transform: scale(0)}
   to {transform: scale(1)}
 }
+
+span{
+    color: red;
+}
