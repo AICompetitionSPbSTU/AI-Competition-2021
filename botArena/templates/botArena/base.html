@@ -29,7 +29,6 @@
 
        <ul class="container">
 
-           <a href="{% url 'botArena:about' %}"> About </a>
             {% block nav %}{% endblock %}
            {% if request.user.is_authenticated %}
                 <a href="{% url 'botArena:logout' %}">  Logout  </a>

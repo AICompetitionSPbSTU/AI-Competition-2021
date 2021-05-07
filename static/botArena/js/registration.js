@@ -20,33 +20,39 @@ jQuery(function($) {
     var el_l    = $("#login");
     if ( el_l.val().length < 4 ) {
       var v_login = true;
-      el_l.after('<span class="text-error for-login">Login must include at least 3 symbols!</span>');
       document.getElementById('login').style.color = "red";
-      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+      document.getElementById('login_err').style.color = 'black';
     }
     else{
         document.getElementById('login').style.color = "blue";
+        document.getElementById('login_err').style.color = 'transparent';
+
     }
     $("#login").toggleClass('error', v_login );
 
     // Проверка e-mail
 
-    var reg     = /^\w+([\.-]?\w+)*@(((([a-z0-9]{2,})|([a-z0-9][-][a-z0-9]+))[\.][a-z0-9])|([a-z0-9]+[-]?))+[a-z0-9]+\.([a-z]{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/i;
-    var el_e    = $("#email");
-    var v_email = el_e.val()?false:true;
+    let reg     = /^\w+([\.-]?\w+)*@(((([a-z0-9]{2,})|([a-z0-9][-][a-z0-9]+))[\.][a-z0-9])|([a-z0-9]+[-]?))+[a-z0-9]+\.([a-z]{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/i;
+    let el_e    = $('#email');
+    let v_email = el_e.val()?false:true;
 
     if ( v_email ) {
-      el_e.after('<span class="text-error for-email">E-mail is required!</span>');
       document.getElementById('email').style.color = "red";
-      $(".for-email").css({top: el_e.position().top + el_e.outerHeight() + 2});
+      document.getElementById('email_err').innerText = 'E-mail is required!'
+      document.getElementById('email_err').style.color = 'black'
+
     } else if ( !reg.test( el_e.val() ) ) {
       v_email = true;
-      el_e.after('<span class="text-error for-email">You put in unacceptable e-mail!</span>');
       document.getElementById('email').style.color = "red";
-      $(".for-email").css({top: el_e.position().top + el_e.outerHeight() + 2});
+      document.getElementById('email_err').innerText = 'You put in unacceptable e-mail!'
+      document.getElementById('email_err').style.color = 'black'
+
+
     }
     else{
               document.getElementById('email').style.color = "blue";
+              document.getElementById('email_err').style.color = 'transparent';
+
     }
     $("#email").toggleClass('error', v_email );
 
@@ -58,24 +64,35 @@ jQuery(function($) {
     var v_pass1 = el_p1.val()?false:true;
     var v_pass2 = el_p1.val()?false:true;
 
+
+    if ( el_p1.val().length < 6 ) {
+      var v_pass1 = true;
+      var v_pass2 = true;
+      document.getElementById('pass1').style.color = "red";
+      document.getElementById('pass2').style.color = "red";
+      document.getElementById('error_password').style.color = 'black';
+
+    }
+        else{
+        document.getElementById('pass1').style.color = "blue";
+        document.getElementById('error_password').style.color = 'transparent';
+    }
+
     if ( el_p1.val() != el_p2.val() ) {
       var v_pass1 = true;
       var v_pass2 = true;
-      el_p1.after('<span class="text-error for-pass1">Password mismatch!</span>');
-      document.getElementById('pass1').style.color = "red";
-        document.getElementById('pass2').style.color = "red";
-      $(".for-pass1").css({top: el_p1.position().top + el_p1.outerHeight() + 2});
-    } else if ( el_p1.val().length < 6 ) {
-      var v_pass1 = true;
-      var v_pass2 = true;
-      el_p1.after('<span class="text-error for-pass1">Password must include at least 6 symbols!</span>');
       document.getElementById('pass1').style.color = "red";
       document.getElementById('pass2').style.color = "red";
-      $(".for-pass1").css({top: el_p1.position().top + el_p1.outerHeight() + 2});
+      document.getElementById('mismatch').style.color = 'black';
+
     }
     else{
         document.getElementById('pass1').style.color = "blue";
         document.getElementById('pass2').style.color = "blue";
+        document.getElementById('error_password').style.color = 'transparent';
+        document.getElementById('mismatch').style.color = 'transparent';
+
+
     }
 
     $("#pass1").toggleClass('error', v_pass1 );
