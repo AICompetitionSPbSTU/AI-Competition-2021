@@ -40,14 +40,14 @@ def logging_test(request):
         if user is not None:
             login(request, user)
             if next_to == "":
-                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
             else:
                 return HttpResponseRedirect(next_to)
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
             # return render(request, 'botArena/login.html', context)
-            return HttpResponseRedirect(reverse('botArena:home', args=()))
-    return HttpResponseRedirect(reverse('botArena:home', args=()))
+            return home(request, error ="Wrong username or password." )  # HttpResponseRedirect(reverse('botArena:home', args=()))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
     # return render(request, 'botArena/login.html', context)
 
 
@@ -75,18 +75,21 @@ def creating_game_view(request):
     return render(request, 'botArena/new_game.html', {'form': form})
 
 
-def home(request):
+def home(request, error=None):
     # if not request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse('botArena:login', args=()))
     game_list = Game.objects.order_by('-name')[:7]
-    context = {'game_list': game_list}
+    if error:
+        context = {'game_list': game_list, 'err_msg': error}
+    else:
+        context = {'game_list': game_list}
     return render(request, 'botArena/home.html', context)
 
 
 def logout_view(request):
     logout(request)
     # return HttpResponseRedirect(reverse('botArena:login'))
-    return HttpResponseRedirect(reverse('botArena:home', args=()))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
@@ -114,22 +117,22 @@ def registration(request):
             if len(username) > 50:
                 err_msg = "User name is too long"
                 # return render(request, 'botArena/registration.html', {"error_message": err_msg})
-                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request, error="User name is too long")  # HttpResponseRedirect(reverse('botArena:home', args=()))
             if len(password) < 5:
                 err_msg = "Password too short"
-                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request, error = err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
                 # return render(request, 'botArena/registration.html', {"error_message": err_msg})
             user = User.objects.create_user(username, email, password)
             user.save()
         else:
             err_msg = "User already exist"
-            return HttpResponseRedirect(reverse('botArena:home', args=()))
+            return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
             # return render(request, 'botArena/registration.html', {"error_message": err_msg})
         # return render(request, 'botArena/login.html')
-        return HttpResponseRedirect(reverse('botArena:home', args=()))
+        return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
     # return render(request, 'botArena/registration.html')
-    return HttpResponseRedirect(reverse('botArena:home', args=()))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
