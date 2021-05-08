@@ -231,11 +231,13 @@
 
 $(document).ready(function() {
     var $element = $('#bubble-1');
-    var newText = 'How to write bots? \n Below you can see .txt file with template of bot. Copy it in your .py file and begin to create your own winner. !Remind: bot must be written on Python!'
+    var newText = 'On  this  site  you  can  play  exciting  turn-based  games.  However,  its  main  feature   is  the  ability  to  upload  your  own  bots  that  will  fight  with  real  people  and  earn  points  for  the  rating.\n' +
+        'To  understand  how  to  get  started,  select  a  game  from  the  list  on  the  home  page.  By  clicking  play,  you  will  be  taken  to  the  game  page  with  an  explanation.\n' +
+        'Good  luck  and  have  fun!'
     bubbleText({
         element: $element,
         newText: newText,
-        speed: 2000,
+        speed: 17000,
         repeat: 0,
     });
 })
