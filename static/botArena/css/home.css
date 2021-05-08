@@ -33,8 +33,6 @@ li.active div {
 }
 
 
-
-
 /* Модальный (фон) */
 .modal {
   display: none; /* Скрыто по умолчанию */
@@ -52,10 +50,14 @@ li.active div {
 
 /* Модальное Содержание/коробка */
 .modal-content {
-  background-color: #fefefe;
+    position: relative;
+  /*background-color: #fefefe;*/
+    background-color: #f1d2ff;
   margin: 5px auto; /* 15% сверху и по центру */
   border: 1px solid #888;
-  width: 80%; /* Может быть больше или меньше, в зависимости от размера экрана */
+  width: 350px; /* Может быть больше или меньше, в зависимости от размера экрана */
+    right: 10em;
+    border-radius: 5%;
 }
 
 /* Кнопка закрытия */
@@ -93,5 +95,52 @@ li.active div {
 }
 
 span{
-    color: red;
+    color: #ff0000;
+}
+
+
+#register {
+    background-color: #83f1ed;
+    position: relative;
+    right: 10em;
+    width: 350px;
+    border-radius: 5%;
+    height: 350px;
+}
+
+#login-form{
+
+    width: 350px;
+}
+
+button {
+    position: relative;
+    width: 300px;
+    left: 10px;
+
+}
+
+.forgot {
+    position: relative;
+    width: 295px;
+    left: 6px;
+    margin-top: 20px;
+}
+
+input {
+    width: 300px;
+    margin-bottom: 20px;
+    position: relative;
+    left: 10px;
+}
+
+h1{
+    margin-top: 0.5em;
+    position: relative;
+    left: 10px;
+}
+
+.text-error {
+    position: relative;
+    left: 10px;
 }
