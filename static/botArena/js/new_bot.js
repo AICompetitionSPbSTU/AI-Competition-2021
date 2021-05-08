@@ -1,73 +1,35 @@
-    function uploadFile(file, s3Data, url){
+jQuery(function($) {
+  $('#form').on('input', function (event) {
+      validateForm()
+  });
 
-      const xhr = new XMLHttpRequest();
-      xhr.open('POST', s3Data.url);
-      xhr.setRequestHeader('x-amz-acl', 'public-read');
+  // $('#form').on('submit', function (event) {
+  //     if(validateForm()){
+  //         event.preventDefault();
+  //     }
+  // });
 
-      const postData = new FormData();
-      for(key in s3Data.fields){
-        postData.append(key, s3Data.fields[key]);
-      }
-      postData.append('file', file);
-
-      xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200 || xhr.status === 204){
-            //ocument.getElementById('preview').src = url;
-            document.getElementById("id_url_source").value = url;
-          }
-          else{
-              document.getElementById("demo").innerHTML = xhr.status;
-            alert('Could not upload file.'+xhr.status);
-          }
-        }
-      };
-      xhr.send(postData);
-    }
-
-    /*
-      Function to get the temporary signed request from the Python app.
-      If request successful, continue to upload the file using this signed
-      request.
-    */
-    function getSignedRequest(file){
-      const xhr = new XMLHttpRequest();
-        //let game = document.getElementsByName("game_name");
-        xhr.open('GET', "/botArena/sign-s3?file_name="+file.name+"&file_type="+file.type+"&game_name="+"{{ game_name }}");
-      xhr.onreadystatechange = () => {
-        if(xhr.readyState === 4){
-          if(xhr.status === 200){
-            const response = JSON.parse(xhr.responseText);
-            uploadFile(file, response.data, response.url);
-          }
-          else{
-              //
-            alert('Could not get signed URL.');
-          }
-        }
-      };
-      xhr.send();
-    }
-
-
-    /*
-       Function called when file input updated. If there is a file selected, then
-       start upload procedure by asking for a signed request from the app.
-    */
-    function initUpload(){
-      const files = document.getElementById('file-input').files;
-      const file = files[0];
-      document.getElementById("demo").innerHTML = 5 + 6;
+    function validateForm() {
+    $(".text-error").remove();
+    var el_l = $("#sub");
+    const files = document.getElementById('file-input').files;
+    const file = files[0];
       if(!file){
-        return alert('No file selected.');
+        return true;
       }
-      getSignedRequest(file);
-    }
+      else if(!file.name.endsWith(".py")){
+        el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> It is not .py file! </span>');
+        return true
+      }
+    return false
 
-    /*
-       Bind listeners when the page loads.
-    */
-    (() => {
-        document.getElementById('submit').onclick = initUpload;
-      // document.getElementById('file-input').onchange = initUpload;
-    })();
+  // $('#login_form').on('submit', function(event) {
+  //   if ( validateForm() ) { // если есть ошибки возвращает true
+  //     event.preventDefault();
+  //     $( ".send" ).after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short </span>');
+  //
+  //   }});
+
+
+
+}})
