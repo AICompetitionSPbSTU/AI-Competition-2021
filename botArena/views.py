@@ -46,7 +46,8 @@ def logging_test(request):
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
             # return render(request, 'botArena/login.html', context)
-            return home(request, error ="Wrong username or password." )  # HttpResponseRedirect(reverse('botArena:home', args=()))
+            return home(request,
+                        error="Wrong username or password.")  # HttpResponseRedirect(reverse('botArena:home', args=()))
     return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
     # return render(request, 'botArena/login.html', context)
 
@@ -117,10 +118,11 @@ def registration(request):
             if len(username) > 50:
                 err_msg = "User name is too long"
                 # return render(request, 'botArena/registration.html', {"error_message": err_msg})
-                return home(request, error="User name is too long")  # HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request,
+                            error="User name is too long")  # HttpResponseRedirect(reverse('botArena:home', args=()))
             if len(password) < 5:
                 err_msg = "Password too short"
-                return home(request, error = err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
                 # return render(request, 'botArena/registration.html', {"error_message": err_msg})
             user = User.objects.create_user(username, email, password)
             user.save()
@@ -184,6 +186,7 @@ def playground_bot(request, game_name, bot_id):
         # bot_code = temp_file.read()
         this_bot.source = str(temp_file.name)
         temp_file.close()
+        this_bot.save()
 
     working_source = str(this_bot.source)
 
