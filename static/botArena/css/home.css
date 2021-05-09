@@ -1,6 +1,6 @@
-body {
-	margin: 0;
-}
+/*body {*/
+/*	margin: 0;*/
+/*}*/
 
 ul {
 	list-style: none;
@@ -9,23 +9,21 @@ ul {
 	width: 10em;
 }
 
-ul li {
-	position: relative;
-}
+/*ul li {*/
+/*	position: relative;*/
+/*}*/
 
 ul li a {
-	/*background-color: #EEE;*/
 	display: block;
 	padding: 1em;
-    /*font-size: 16px;*/
 }
 
 ul li a + div {
 	background: #7fd6ec;
 	clip: rect(0 0 0 0);
 	position: absolute;
-	left: 190%;
-	bottom: -150%;
+	left: 100%;
+	bottom: -130%;
 	width: 320px;
 }
 
@@ -57,7 +55,6 @@ li.active div {
 
 /* Модальное Содержание/коробка */
 .modal-content {
-  /*background-color: #fefefe;*/
     background-color: #f1d2ff;
   margin: 5px auto; /* 15% сверху и по центру */
   border: 1px solid #888;
@@ -107,36 +104,30 @@ span{
 
 #register {
     background-color: #83f1ed;
+      margin: 5px auto; /* 15% сверху и по центру */
+  border: 1px solid #888;
+  width: 350px; /* Может быть больше или меньше, в зависимости от размера экрана */
     right: 10em;
-    width: 350px;
     border-radius: 5%;
-    height: 350px;
+    height: 360px;
+
 }
 
 #login-form{
-
     width: 350px;
 }
 
 button {
     position: relative;
-    width: 301px;
-    left: 33px;
-
+    width: 100%;
 }
 
-.forgot {
-    position: relative;
-    width: 295px;
-    left: 6px;
-    margin-top: 20px;
-}
 
 input {
     width: 300px;
     margin-bottom: 20px;
     position: relative;
-    left: 10px;
+    left: 1em;
 }
 
 h1{
@@ -161,14 +152,12 @@ h1{
 
 .text-error {
     position: relative;
-    left: 10px;
+    left: 1em;
 }
 
 .games_list {
     position: relative;
-  top: 50%;
     text-align: center;
-  /*transform: translate(-50%,-50%);*/
 }
 
 .game_name {
@@ -185,4 +174,11 @@ h1{
 		 4px  3px 0   #FFFFFF,
 		 4px  4px 0   #FFFFFF,
 		 4px  4px 0   #FFFFFF;
+}
+
+.forgot {
+    position: relative;
+    width: auto;
+    left: -0.25em;
+    margin-top: 20px;
 }
