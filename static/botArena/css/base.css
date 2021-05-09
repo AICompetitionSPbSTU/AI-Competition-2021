@@ -69,6 +69,7 @@ header {
   outline-color: rgba(71, 126, 232, 0);
   outline-offset: 20px;
 }
+
 #canvas {
     position: absolute;
     width: 100%;
@@ -178,6 +179,7 @@ table tbody::-webkit-scrollbar-thumb:hover {
 }
 .content div {
     margin: 0 auto;
+    line-height: 2;
 }
 .content p{
     margin: 50px 80px;
@@ -191,7 +193,7 @@ table tbody::-webkit-scrollbar-thumb:hover {
     position: relative;
     height: 80%;
     margin-left: 1%;
-        margin-top: 1%;
+    margin-top: 1%;
 
     float: left;
     display: inline-block;

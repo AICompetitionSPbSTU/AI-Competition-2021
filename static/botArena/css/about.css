@@ -76,8 +76,8 @@ header {
 #canvas {
     position: absolute;
     width: 100%;
-background: rgb(204,223,228);
-background: linear-gradient(0deg, rgba(204,223,228,1) 4%, rgba(62,192,219,1) 37%, rgba(27,116,215,1) 85%);	position: absolute;
+    background: rgb(204,223,228);
+    background: linear-gradient(0deg, rgba(204,223,228,1) 4%, rgba(62,192,219,1) 37%, rgba(27,116,215,1) 85%);	position: absolute;
 	display: block;
     opacity: .6;
     height: 98%;

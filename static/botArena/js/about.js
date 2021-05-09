@@ -231,13 +231,14 @@
 
 $(document).ready(function() {
     var $element = $('#bubble-1');
-    var newText = 'On  this  site  you  can  play  exciting  turn-based  games.  However,  its  main  feature   is  the  ability  to  upload  your  own  bots  that  will  fight  with  real  people  and  earn  points  for  the  rating.\n' +
-        'To  understand  how  to  get  started,  select  a  game  from  the  list  on  the  home  page.  By  clicking  play,  you  will  be  taken  to  the  game  page  with  an  explanation.\n' +
-        'Good  luck  and  have  fun!'
+    var newText = 'Hello my dear friend! On this site you can play exciting turn-based games. \n' +
+        'As far as possible, we will update our site and add new games that will definitely not leave you indifferent. However, its main feature is the ability to upload your own bots that will fight with real people and earn points for the rating.\n' +
+        'To understand how to get started, select a game from the list on the home page. By clicking play, you will be taken to the game page with an explanation.\n' +
+        'Good luck and have fun!' + '\n' +' With love, project team.'
     bubbleText({
         element: $element,
         newText: newText,
-        speed: 17000,
+        speed: 3000,
         repeat: 0,
     });
 })
