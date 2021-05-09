@@ -1,6 +1,8 @@
 from random import seed, randint
 
 
+# MATCHES GAME FILE
+
 class Game:
 
     def __init__(self, *, bot, state=None):
@@ -20,7 +22,7 @@ class Game:
         self.state['turn'] = 'bot' if randint(0, 1) == 0 else 'user'
 
     def bot_move(self):
-        #print(self.state['number'])
+        # print(self.state['number'])
         self.change_state_matches(self.bot.get_matches_number(self.state['field']))
         if self.state['field'] != 1:
             self.change_state_turn('user')
@@ -29,13 +31,18 @@ class Game:
         self.change_state_matches(matches_number)
         if self.state['field'] != 1:
             self.change_state_turn('bot')
+
     #     else win!!!
 
     def change_state_turn(self, player):
         self.state['turn'] = player
 
     def change_state_matches(self, matches_number):
-        self.state['field'] = self.state['field'] - int(matches_number)
+        change = int(matches_number)
+        if 0 < change < 4:
+            self.state['field'] = self.state['field'] - change
+        else:  # cheating from bot i guess
+            self.state['field'] = 2  # user will win
 
     def user_input(self, **kwargs):
         if 'user_action' in kwargs:

@@ -44,7 +44,10 @@ class Game:
         self.state['turn'] = player
 
     def change_state_field(self, field_pos, change_by):
-        self.state['field'][field_pos] = change_by
+        if self.state['field'][int(field_pos)] == -1:
+            self.state['field'][int(field_pos)] = int(change_by)
+        else:  # cheating!!!
+            self.state['field'] = [1 for _ in range(9)]  # user insta wins
 
     def user_input(self, **kwargs):
         if 'user_action' in kwargs:

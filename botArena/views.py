@@ -1,9 +1,10 @@
 import ctypes
 import os
-# import boto3
+import boto3
 import json
+from builtins import __build_class__
 from random import seed, randint, choice
-# from botocore.config import Config
+from botocore.config import Config
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -29,7 +30,7 @@ def logging_test(request):
     if request.GET:
         next_to = request.GET['next']
     # print(next_to)
-    game_list = Game.objects.order_by('-name')
+    game_list = Game.objects.order_by('-name')[:7]
     context = {'game_list': game_list, 'next': next_to}
     if request.method == 'POST':
         username = request.POST['username']
@@ -39,13 +40,16 @@ def logging_test(request):
         if user is not None:
             login(request, user)
             if next_to == "":
-                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
             else:
                 return HttpResponseRedirect(next_to)
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
-            return render(request, 'botArena/login.html', context)
-    return render(request, 'botArena/login.html', context)
+            # return render(request, 'botArena/login.html', context)
+            return home(request,
+                        error="Wrong username or password.")  # HttpResponseRedirect(reverse('botArena:home', args=()))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+    # return render(request, 'botArena/login.html', context)
 
 
 @login_required()
@@ -72,25 +76,33 @@ def creating_game_view(request):
     return render(request, 'botArena/new_game.html', {'form': form})
 
 
-def home(request):
+def home(request, error=None):
     # if not request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse('botArena:login', args=()))
     game_list = Game.objects.order_by('-name')[:7]
-    context = {'game_list': game_list}
+    if error:
+        context = {'game_list': game_list, 'err_msg': error}
+    else:
+        context = {'game_list': game_list}
     return render(request, 'botArena/home.html', context)
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('botArena:login'))
+    # return HttpResponseRedirect(reverse('botArena:login'))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
-@login_required()
+# @login_required()
 def game(request, name):
     # Сделать через get object or 4o4?
     games = Game.objects.filter(name__startswith=name)
     this_game = games[0]
-    description = this_game.long_description.read()
+    all_text = ""
+    with open('media/' + str(this_game.long_description), 'r') as txt:
+        lines = txt.readlines()
+        all_text = "".join(lines)
+    description = all_text  # this_game.long_description.read()
     # print(this_game)
     return render(request, 'botArena/game.html', {'game': this_game, 'description': description})
 
@@ -105,18 +117,24 @@ def registration(request):
         if not duplicate_users:
             if len(username) > 50:
                 err_msg = "User name is too long"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return home(request,
+                            error="User name is too long")  # HttpResponseRedirect(reverse('botArena:home', args=()))
             if len(password) < 5:
                 err_msg = "Password too short"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
             user = User.objects.create_user(username, email, password)
             user.save()
         else:
             err_msg = "User already exist"
-            return render(request, 'botArena/registration.html', {"error_message": err_msg})
-        return render(request, 'botArena/login.html')
+            return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+            # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+        # return render(request, 'botArena/login.html')
+        return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
-    return render(request, 'botArena/registration.html')
+    # return render(request, 'botArena/registration.html')
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
@@ -155,73 +173,100 @@ def sign_s3(request):
 
 @login_required()
 def playground_bot(request, game_name, bot_id):
-    print('playground_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
+    this_bot = this_game.bot_set.filter(pk=bot_id)[0]
+    # print(this_bot.source)
+    # print(os.listdir())
+    if not os.path.exists(str(this_bot.source)):  # upload bot if we dont have prev temp file
+        print("upload new File!")
+        url = this_bot.url_source
+        temp_file = NamedTemporaryFile(delete=False)
+        temp_file.write(urlopen(url).read())
+        # bot_code = temp_file.read()
+        this_bot.source = str(temp_file.name)
+        temp_file.close()
+        this_bot.save()
 
-    # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
-    with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
+    working_source = str(this_bot.source)
+    # working_source = 'bot_src/pacman/my_pacman_bot.py'
+    with open(working_source, 'r') as f:
         bot_code = f.read()
+    game_code = this_game.source.read()
 
-        game_code = this_game.source.read()
+    loc = {}
+    import math
 
-        loc = {}
-        import math
-        exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
-                                         'randint':randint}}, loc)
-        bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
-        loc = {}
-        exec(game_code, None, loc)
-        game_class = loc['Game']
-        bot = bot_class()
-        game = game_class(bot=bot)
-
+    exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
+                                     'randint': randint}, 'range': range, 'len': len}, loc)
+    bot_class = loc['Bot']
+    loc = {}
+    exec(game_code, None, loc)
+    game_class = loc['Game']
+    bot = bot_class()
+    game = game_class(bot=bot)
+    
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
+
         if game_cond == "start":
             print('game start')
-            ##            this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-            ##            url = this_bot.url_source
-
-            ##            temp_file = NamedTemporaryFile(delete=True)
-            ##            temp_file.write(urlopen(url).read())
-            ##            bot_code = temp_file.read()
-            ##            temp_file.close()
-
+            game.start_game()
             state = game.get_state()
+            # Не понял, че за приколы с field'ом, поэтому
+            # просто возвращаю полученный словарь состояния
+            
+            request.session['game_state'] = state
 
-            data = json.dumps({'inner_state': state['field']})
-
-            request.session['game_state'] = game.get_state()
-
-            return HttpResponse(data, content_type='json')
+            return HttpResponse(json.dumps(state), content_type='json')
         if game_cond == "running":
             print('game running')
             incoming_state = request.GET.get("inner_state")
             game = game_class(state=request.session['game_state'], bot=bot)
-
-            # user_took = game.get_state() - int(state)
-
-            # print('user took:', user_took)
 
             game.user_input(user_action=incoming_state)
             game.bot_move()
 
             new_state = game.get_state()
 
-            print('new state:', new_state)
-
-            data = json.dumps({'inner_state': new_state['field']})  # 'number'
             request.session['game_state'] = new_state
 
-            return HttpResponse(data, content_type='json')
-    print(this_game.interface)
+            # Раньше победитель приходил со стороны клиента
+            # будем требовать, чтобы в состоянии игры всегда было поле 'winner'
+            # принимающее одно из значений: 'player', 'bot', 'draw', 'none'
+            # это нужно добавить в спички и крестики нолики
+            # могу и я добавить, когда проснусь
+            # Еще мне показалось, что this_bot.save() в конце функции
+            # был лишним. Верни его, если это не так.
+            if new_state['winner'] != 'none':
+                if new_state['winner'] == 'bot':
+                    this_bot.result = 1 + this_bot.result
+                    if this_game.leader_score < this_bot.result:
+                        this_game.leader_score = this_bot.result
+                        this_game.leader = this_bot.creator_name
+                        this_game.save()
+                    this_bot.save()
+                this_bot.all_games_count = 1 + this_bot.all_game_count
+                this_bot.save()
+            
+            return HttpResponse(json.dumps(new_state), content_type='json')
+
     return render(request, this_game.interface)
 
 
 @login_required()
 def bot_view(request, game_name, creator_name, id):
     return render(request, 'botArena/bot.html', {'game_name': game_name, 'bot_id': id})
+
+
+@login_required()
+def download_bot(request, game_name):
+    # content = open("botArena/templates/botArena/" + str(game_name) + "_bot.py").read()
+    # return HttpResponse(content, content_type='text/plain', filename='example_bot_code.txt')
+    response = HttpResponse(open("botArena/templates/botArena/" + str(game_name) + "_bot.py", 'rb').read())
+    response['Content-Type'] = 'text/plain'
+    response['Content-Disposition'] = 'attachment; filename=example_bot.py'
+    return response
 
 
 @login_required()
@@ -234,21 +279,26 @@ def creating_bot_view(request, name):
     if request.method == "POST":
         # print(request.POST)
         post_values = request.POST.copy()
+        post_values['url_source'] = request.POST['url_source']
         post_values['game'] = this_game[0]
         post_values['creator_name'] = request.user.username
-        form = BotForm(post_values, request.FILES)
-        print(form)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Committee Podcast Was Created',
-                             "alert alert-success alert-dismissible")
-            # return HttpResponseRedirect(reverse('botArena:home', args=()))
-
-        # Если форма не валидная
-        else:
-            form = BotForm()
-            return render(request, 'botArena/new_game.html', {'game_name': name, 'form': form, 'error_message': "Error "
-                                                                                                                "occurs"})
+        bot = Bot(game=this_game[0], creator_name=request.user.username,
+                  url_source=request.POST['url_source'])
+        bot.save()
+        return HttpResponseRedirect(reverse('botArena:game', args=(name,)))
+        # form = BotForm(post_values, request.FILES)
+        # print(form)
+        # if form.is_valid():
+        #     form.save()
+        #     messages.success(request, 'Committee Podcast Was Created',
+        #                      "alert alert-success alert-dismissible")
+        #     # return HttpResponseRedirect(reverse('botArena:home', args=()))
+        #
+        # # Если форма не валидная
+        # else:
+        #     form = BotForm()
+        #     return render(request, 'botArena/new_game.html', {'game_name': name, 'form': form, 'error_message': "Error "
+        #                                                                                                         "occurs"})
     form = BotForm()
 
     return render(request, 'botArena/new_bot.html', {'game_name': name, 'form': form, })

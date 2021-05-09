@@ -8,21 +8,23 @@
 
 {% block head %}
     <link rel="stylesheet" href="{%static 'botArena/css/new_bot.css'%}">
+
 {% endblock %}
 
 {% block content%}
     <div>
         <form id='form' method="post" enctype="multipart/form-data">
             <input type="file" id="file-input">
+            <p hidden><input type="url" name="url_source" id="url_source" value="" ></p>
             {% csrf_token %}
-            <div id='hid'>{{ form.as_p }}</div>
+{#            <div id='hid'>{{ form.as_p }}</div>#}
             <input id='sub' type="submit" value="Upload">  </input>
         </form>
         <div id="err"></div>
     </div>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-
+    <script src="/static/botArena/js/new_bot.js"></script>
     <script type="text/javascript">
       /*
       Function to carry out the actual POST request to S3 using the signed request from the Python app.
@@ -43,10 +45,10 @@
         if(xhr.readyState === 4){
           if(xhr.status === 200 || xhr.status === 204){
             //ocument.getElementById('preview').src = url;
-            document.getElementById("id_url_source").value = url;
+            document.getElementById("url_source").value = url;
           }
           else{
-              document.getElementById("demo").innerHTML = xhr.status;
+              {#document.getElementById("demo").innerHTML = xhr.status;#}
             alert('Could not upload file.'+xhr.status);
           }
         }
@@ -86,7 +88,7 @@
     function initUpload(){
       const files = document.getElementById('file-input').files;
       const file = files[0];
-      document.getElementById("demo").innerHTML = 5 + 6;
+      {#document.getElementById("demo").innerHTML = 5 + 6;#}
       if(!file){
         return alert('No file selected.');
       }
@@ -96,12 +98,18 @@
        Bind listeners when the page loads.
     */
     (() => {
-        document.getElementById("demo").innerHTML = 12 + 6;
-      document.getElementById('sub').onclick = initUpload;
-    })();
+      document.getElementById('file-input').onchange = initUpload;
+     })();
+
+    {#jQuery(function($) {#}
+    {#    $('#form').on('submit', function (event) {#}
+    {#        initUpload();#}
+    {#    }#}
+    {#    )#}
+    {# })#}
 
     </script>
-    }
+
 {% endblock %}
 
 
