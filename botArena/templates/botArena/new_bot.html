@@ -3,7 +3,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{%static 'botArena/css/new_bot.css'%}">
-    <script src="/static/botArena/js/new_bot.js"></script>
+
 {% endblock %}
 
 {% block content%}
@@ -19,7 +19,7 @@
     </div>
   {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-
+    <script src="/static/botArena/js/new_bot.js"></script>
     <script type="text/javascript">
       /*
       Function to carry out the actual POST request to S3 using the signed request from the Python app.
