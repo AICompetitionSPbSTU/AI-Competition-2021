@@ -1,8 +1,14 @@
-<html>
-<head>
+{% extends 'botArena/base.html' %}
 
+{% block head %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Pacman</title>
+    <link rel="stylesheet" type="text/css" href="/static/botArena/css/style_game_matches.css">
 </head>
-<body>
+
+{% endblock head %}
 <canvas id="game_window" width="200" height="200">
 	<p>Ваш браузер не поддерживает рисование.</p>
 </canvas>
