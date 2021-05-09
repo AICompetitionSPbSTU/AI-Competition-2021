@@ -175,8 +175,9 @@ def sign_s3(request):
 def playground_bot(request, game_name, bot_id):
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
-
     this_bot = this_game.bot_set.filter(pk=bot_id)[0]
+    # print(this_bot.source)
+    # print(os.listdir())
     if not os.path.exists(str(this_bot.source)):  # upload bot if we dont have prev temp file
         print("upload new File!")
         url = this_bot.url_source
