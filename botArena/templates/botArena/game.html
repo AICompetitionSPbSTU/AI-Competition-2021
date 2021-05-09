@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<head>
+  <title>Game</title>
+</head>
+
 {% extends 'botArena/base.html' %}
 {% load static %}
 
@@ -12,7 +17,7 @@
 
 {% block content %}
     <h2> {{game.name}} </h2>
-    <div>{{ description }}</div>
+    <p>{{ description }}</p>
     {% if game %}
         <div class="c">
             {%  if game.bot_set.all %}

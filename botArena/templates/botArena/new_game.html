@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<head>
+  <title>New game</title>
+</head>
+
 {% extends 'botArena/base.html' %}
 {%load static%}
 
@@ -10,7 +15,7 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn btn-primary btn-block btn-large"> Загрузить </button>
+            <button type="submit" class="btn btn-primary btn-block btn-large"> Download </button>
           </form>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     </div>
