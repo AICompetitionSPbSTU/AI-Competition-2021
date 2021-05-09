@@ -177,7 +177,7 @@ def playground_bot(request, game_name, bot_id):
     this_game = games[0]
 
     this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-
+    this_bot.source = 'bot_src/pacman/my_pacman_bot.py' # temporary
     if not os.path.exists(str(this_bot.source)):  # upload bot if we dont have prev temp file
         print("upload new File!")
         url = this_bot.url_source
@@ -189,7 +189,7 @@ def playground_bot(request, game_name, bot_id):
         this_bot.save()
 
     working_source = str(this_bot.source)
-    working_source = 'bot_src/pacman/my_pacman_bot.py'
+    # working_source = 'bot_src/pacman/my_pacman_bot.py'
     with open(working_source, 'r') as f:
         bot_code = f.read()
     game_code = this_game.source.read()
