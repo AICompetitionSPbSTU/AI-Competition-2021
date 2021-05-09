@@ -92,16 +92,16 @@
     /*
        Bind listeners when the page loads.
     */
-    {#(() => {#}
-    {#  document.getElementById('file-input').onchange = initUpload;#}
-    {# })();#}
+    (() => {
+      document.getElementById('file-input').onchange = initUpload;
+     })();
 
-    jQuery(function($) {
-        $('#form').on('file-input', function (event) {
-            initUpload();
-        }
-        )
-    });
+    {#jQuery(function($) {#}
+    {#    $('#form').on('submit', function (event) {#}
+    {#        initUpload();#}
+    {#    }#}
+    {#    )#}
+    {# })#}
 
     </script>
 
