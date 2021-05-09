@@ -189,6 +189,7 @@ def playground_bot(request, game_name, bot_id):
         this_bot.save()
 
     working_source = str(this_bot.source)
+    print(working_source)
     # working_source = 'bot_src/pacman/my_pacman_bot.py'
     with open(working_source, 'r') as f:
         bot_code = f.read()

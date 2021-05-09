@@ -15,7 +15,7 @@ class Game:
         self.bot = bot
 
     def get_state(self):
-        return self.state['field']
+        return self.state
 
     def start_game(self):
         seed()
