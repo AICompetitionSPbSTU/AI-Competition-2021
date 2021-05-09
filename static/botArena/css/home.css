@@ -57,7 +57,6 @@ li.active div {
 
 /* Модальное Содержание/коробка */
 .modal-content {
-    position: relative;
   /*background-color: #fefefe;*/
     background-color: #f1d2ff;
   margin: 5px auto; /* 15% сверху и по центру */
@@ -108,7 +107,6 @@ span{
 
 #register {
     background-color: #83f1ed;
-    position: relative;
     right: 10em;
     width: 350px;
     border-radius: 5%;
@@ -122,8 +120,8 @@ span{
 
 button {
     position: relative;
-    width: 300px;
-    left: 10px;
+    width: 301px;
+    left: 33px;
 
 }
 

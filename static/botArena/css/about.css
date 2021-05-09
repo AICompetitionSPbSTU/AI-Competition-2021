@@ -58,7 +58,7 @@ header {
 .container a {
     white-space: nowrap;
     text-align: center;
-    margin-left: 2%;
+    margin-left: 8%;
     outline: 3px solid;
     outline-color: rgb(57, 67, 129);
     outline-offset: 0px;
