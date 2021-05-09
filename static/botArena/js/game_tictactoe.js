@@ -31,7 +31,7 @@ function StartRequestGet(){
     request.addEventListener("readystatechange", () => {
         if (request.readyState === 4 && request.status === 200) {
             const response = JSON.parse(request.responseText);
-            state = response.inner_state;
+            state = response.field;
         }
     });
     request.send('start');
