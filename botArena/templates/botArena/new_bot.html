@@ -3,6 +3,7 @@
 
 {% block head %}
     <link rel="stylesheet" href="{%static 'botArena/css/new_bot.css'%}">
+    <script src="/static/botArena/js/new_bot.js"></script>
 {% endblock %}
 
 {% block content%}
@@ -91,13 +92,19 @@
     /*
        Bind listeners when the page loads.
     */
-    (() => {
-        {#document.getElementById("demo").innerHTML = 12 + 6;#}
-      document.getElementById('file-input').onchange = initUpload;
-    })();
+    {#(() => {#}
+    {#  document.getElementById('file-input').onchange = initUpload;#}
+    {# })();#}
+
+    jQuery(function($) {
+        $('#form').on('submit', function (event) {
+            initUpload();
+        }
+        )
+    });
 
     </script>
-    }
+
 {% endblock %}
 
 

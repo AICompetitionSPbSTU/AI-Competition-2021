@@ -107,8 +107,6 @@
 	});
 })();
 
-
-
 var modal = document.getElementById('id01');
 
 // Когда пользователь щелкает в любом месте за пределами модального, закройте его
@@ -117,3 +115,153 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+// LOGIN VALIDATION
+
+jQuery(function($) {
+
+    function validateLoginForm() {
+    $(".text-error").remove();
+
+    // Проверка логина
+    var el_l = $("#login");
+    if ( el_l.val().length < 3 ) {
+      var v_login = true;
+      el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short</span>');
+      document.getElementById('login').style.color = "red";
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+    }
+    else if ( el_l.val().length > 16 ) {
+      var v_login = true;
+      el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too long</span>');
+      document.getElementById('login').style.color = "red";
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+    }
+    else{
+        document.getElementById('login').style.color = "blue";
+    }
+    $("#login").toggleClass('error', v_login );
+
+    var el_p1    = $("#pass");
+
+    var v_pass1 = !el_p1.val();
+
+    if ( el_p1.val().length < 8 ) {
+        el_p1.after('<br class="text-error for-login"> <span class="text-error for-login"> Password is too short</span>');
+        document.getElementById('pass').style.color = "red";
+        $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+
+    }
+    else {
+	  document.getElementById('pass').style.color = "blue";
+	}
+
+    $("#pass").toggleClass('error', v_pass1 );
+
+    return ( v_login || v_pass1);
+  }
+
+  $('#login_form').on('submit', function(event) {
+    if ( validateLoginForm() ) { // если есть ошибки возвращает true
+      event.preventDefault();
+      $( ".send" ).after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short </span>');
+
+    }});
+
+  $('#login_form').on('input', function (event) {
+      validateLoginForm()
+  });
+
+})
+
+// REGISTRAION VALIDATION
+
+jQuery(function($) {
+
+    function validateForm() {
+    $(".text-error").remove();
+
+    // Проверка логина
+    var el_l    = $("#login_in_reg");
+    if ( el_l.val().length < 4 ) {
+        var v_login = true;
+      document.getElementById('login_in_reg').style.color = "red";
+        el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short</span>');
+
+    }
+    else {
+        var v_login = true;
+        document.getElementById('login_in_reg').style.color = "blue";
+    }
+    $("#login").toggleClass('error', v_login );
+
+    // Проверка e-mail
+
+    let reg     = /^\w+([\.-]?\w+)*@(((([a-z0-9]{2,})|([a-z0-9][-][a-z0-9]+))[\.][a-z0-9])|([a-z0-9]+[-]?))+[a-z0-9]+\.([a-z]{2}|(com|net|org|edu|int|mil|gov|arpa|biz|aero|name|coop|info|pro|museum))$/i;
+    let el_e    = $('#email');
+    let v_email = !el_e.val();
+
+    if ( v_email ) {
+      document.getElementById('email').style.color = "red";
+      el_e.after('<br class="text-error for-login"> <span class="text-error for-login"> E-mail is required </span>');
+    } else if ( !reg.test( el_e.val() ) ) {
+      v_email = true;
+      document.getElementById('email').style.color = "red";
+      el_e.after('<br class="text-error for-login"> <span class="text-error for-login"> Invalid e-mail address </span>');
+    }
+    else{
+      document.getElementById('email').style.color = "blue";
+    }
+    $("#email").toggleClass('error', v_email );
+
+    // Проверка паролей
+
+    var el_p1    = $("#pass1");
+    var el_p2    = $("#pass2");
+
+    var v_pass1 = !el_p1.val();
+    var v_pass2 = !el_p1.val();
+
+
+    if ( el_p1.val().length < 8 ) {
+      var v_pass1 = true;
+      var v_pass2 = true;
+      document.getElementById('pass1').style.color = "red";
+      document.getElementById('pass2').style.color = "red";
+      el_p1.after('<br class="text-error for-login"> <span class="text-error for-login"> Password too short </span>');
+
+    }
+        else {
+        document.getElementById('pass1').style.color = "blue";
+    }
+
+    if ( el_p1.val() !== el_p2.val() ) {
+      var v_pass1 = true;
+      var v_pass2 = true;
+      document.getElementById('pass2').style.color = "red";
+      el_p2.after('<br class="text-error for-login"> <span class="text-error for-login"> Different password </span>');
+
+    }
+    else{
+        document.getElementById('pass1').style.color = "blue";
+        document.getElementById('pass2').style.color = "blue";
+    }
+
+    $("#pass1").toggleClass('error', v_pass1 );
+    $("#pass2").toggleClass('error', v_pass2 );
+
+    return ( v_login || v_email || v_pass1 || v_pass2 );
+  }
+
+  $('#register').on('submit', function(event) {
+    if ( validateForm() ) { // если есть ошибки возвращает true
+      event.preventDefault();
+    }});
+
+
+  $('#register').on('input', function (event) {
+      validateForm()
+  });
+
+
+})

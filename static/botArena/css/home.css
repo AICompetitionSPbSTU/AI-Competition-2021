@@ -14,17 +14,18 @@ ul li {
 }
 
 ul li a {
-	background-color: #EEE;
+	/*background-color: #EEE;*/
 	display: block;
 	padding: 1em;
+    /*font-size: 16px;*/
 }
 
 ul li a + div {
-	background: #CCC;
+	background: #7fd6ec;
 	clip: rect(0 0 0 0);
 	position: absolute;
-	left: 100%;
-	top: 0;
+	left: 190%;
+	bottom: -150%;
 	width: 320px;
 }
 
@@ -32,8 +33,12 @@ li.active div {
 	clip: auto;
 }
 
+.play {
+    background-color: #d8effc;
+    color: #0095ff;
+    font-size: 16px;
 
-
+}
 
 /* Модальный (фон) */
 .modal {
@@ -46,16 +51,20 @@ li.active div {
   height: 100%; /* Полный рост */
   overflow: auto; /* Включите прокрутку, если это необходимо */
   background-color: rgb(0,0,0); /* Цвет запасной вариант */
-  background-color: rgba(0,0,0,0.4); /* Черный с непрозрачностью */
+  background-color: rgba(0,0,0,0.6); /* Черный с непрозрачностью */
   padding-top: 60px;
 }
 
 /* Модальное Содержание/коробка */
 .modal-content {
-  background-color: #fefefe;
+    position: relative;
+  /*background-color: #fefefe;*/
+    background-color: #f1d2ff;
   margin: 5px auto; /* 15% сверху и по центру */
   border: 1px solid #888;
-  width: 80%; /* Может быть больше или меньше, в зависимости от размера экрана */
+  width: 350px; /* Может быть больше или меньше, в зависимости от размера экрана */
+    right: 10em;
+    border-radius: 5%;
 }
 
 /* Кнопка закрытия */
@@ -90,4 +99,93 @@ li.active div {
 @keyframes animatezoom {
   from {transform: scale(0)}
   to {transform: scale(1)}
+}
+
+span{
+    color: #ff0000;
+}
+
+
+#register {
+    background-color: #83f1ed;
+    position: relative;
+    right: 10em;
+    width: 350px;
+    border-radius: 5%;
+    height: 350px;
+}
+
+#login-form{
+
+    width: 350px;
+}
+
+button {
+    position: relative;
+    width: 300px;
+    left: 10px;
+
+}
+
+.forgot {
+    position: relative;
+    width: 295px;
+    left: 6px;
+    margin-top: 20px;
+}
+
+input {
+    width: 300px;
+    margin-bottom: 20px;
+    position: relative;
+    left: 10px;
+}
+
+h1{
+    margin-top: 0.5em;
+    position: relative;
+    left: 10px;
+    text-align: center;
+        text-shadow:
+
+		 0    4px 0   #FFFFFF,
+		 4px  0   0   #FFFFFF,
+		 1px  4px 0   #FFFFFF,
+		 4px  1px 0   #FFFFFF,
+		 2px  4px 0   #FFFFFF,
+		 4px  2px 0   #FFFFFF,
+		 3px  4px 0   #FFFFFF,
+		 4px  3px 0   #FFFFFF,
+		 4px  4px 0   #FFFFFF,
+		 4px  4px 0   #FFFFFF;
+
+}
+
+.text-error {
+    position: relative;
+    left: 10px;
+}
+
+.games_list {
+    position: relative;
+  left: 41em;
+  top: 50%;
+    text-align: center;
+  /*transform: translate(-50%,-50%);*/
+}
+
+.game_name {
+    color: #c300cb;
+    font-size: 18px;
+    text-shadow:
+		 0    4px 0   #FFFFFF,
+		 4px  0   0   #FFFFFF,
+		 1px  4px 0   #FFFFFF,
+		 4px  1px 0   #FFFFFF,
+		 2px  4px 0   #FFFFFF,
+		 4px  2px 0   #FFFFFF,
+		 3px  4px 0   #FFFFFF,
+		 4px  3px 0   #FFFFFF,
+		 4px  4px 0   #FFFFFF,
+		 4px  4px 0   #FFFFFF;
 }

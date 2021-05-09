@@ -24,7 +24,7 @@ SECRET_KEY = '06si*db26h+=_6x$9fksxvr#j###7!(#+e@neocfwz!7b#7k&y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-HEROKU = True
+HEROKU = False
 ALLOWED_HOSTS = ['bots-arena.herokuapp.com', '127.0.0.1']
 
 # Application definition

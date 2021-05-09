@@ -30,7 +30,7 @@ def logging_test(request):
     if request.GET:
         next_to = request.GET['next']
     # print(next_to)
-    game_list = Game.objects.order_by('-name')
+    game_list = Game.objects.order_by('-name')[:7]
     context = {'game_list': game_list, 'next': next_to}
     if request.method == 'POST':
         username = request.POST['username']
@@ -40,13 +40,16 @@ def logging_test(request):
         if user is not None:
             login(request, user)
             if next_to == "":
-                return HttpResponseRedirect(reverse('botArena:home', args=()))
+                return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
             else:
                 return HttpResponseRedirect(next_to)
         else:
             context = {'game_list': game_list, 'error_message': "Wrong username or password."}
-            return render(request, 'botArena/login.html', context)
-    return render(request, 'botArena/login.html', context)
+            # return render(request, 'botArena/login.html', context)
+            return home(request,
+                        error="Wrong username or password.")  # HttpResponseRedirect(reverse('botArena:home', args=()))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+    # return render(request, 'botArena/login.html', context)
 
 
 @login_required()
@@ -73,20 +76,24 @@ def creating_game_view(request):
     return render(request, 'botArena/new_game.html', {'form': form})
 
 
-def home(request):
+def home(request, error=None):
     # if not request.user.is_authenticated:
     #    return HttpResponseRedirect(reverse('botArena:login', args=()))
     game_list = Game.objects.order_by('-name')[:7]
-    context = {'game_list': game_list}
+    if error:
+        context = {'game_list': game_list, 'err_msg': error}
+    else:
+        context = {'game_list': game_list}
     return render(request, 'botArena/home.html', context)
 
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('botArena:login'))
+    # return HttpResponseRedirect(reverse('botArena:login'))
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
-@login_required()
+# @login_required()
 def game(request, name):
     # Сделать через get object or 4o4?
     games = Game.objects.filter(name__startswith=name)
@@ -110,18 +117,24 @@ def registration(request):
         if not duplicate_users:
             if len(username) > 50:
                 err_msg = "User name is too long"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return home(request,
+                            error="User name is too long")  # HttpResponseRedirect(reverse('botArena:home', args=()))
             if len(password) < 5:
                 err_msg = "Password too short"
-                return render(request, 'botArena/registration.html', {"error_message": err_msg})
+                return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+                # return render(request, 'botArena/registration.html', {"error_message": err_msg})
             user = User.objects.create_user(username, email, password)
             user.save()
         else:
             err_msg = "User already exist"
-            return render(request, 'botArena/registration.html', {"error_message": err_msg})
-        return render(request, 'botArena/login.html')
+            return home(request, error=err_msg)  # HttpResponseRedirect(reverse('botArena:home', args=()))
+            # return render(request, 'botArena/registration.html', {"error_message": err_msg})
+        # return render(request, 'botArena/login.html')
+        return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
-    return render(request, 'botArena/registration.html')
+    # return render(request, 'botArena/registration.html')
+    return home(request)  # HttpResponseRedirect(reverse('botArena:home', args=()))
 
 
 @login_required()
@@ -160,11 +173,11 @@ def sign_s3(request):
 
 @login_required()
 def playground_bot(request, game_name, bot_id):
-    # print('playground_bot')
     games = Game.objects.filter(name__startswith=game_name)
     this_game = games[0]
+
     this_bot = this_game.bot_set.filter(pk=bot_id)[0]
-    # print(os.listdir('/tmp'))
+
     if not os.path.exists(str(this_bot.source)):  # upload bot if we dont have prev temp file
         print("upload new File!")
         url = this_bot.url_source
@@ -173,83 +186,71 @@ def playground_bot(request, game_name, bot_id):
         # bot_code = temp_file.read()
         this_bot.source = str(temp_file.name)
         temp_file.close()
+        this_bot.save()
 
     working_source = str(this_bot.source)
-    # print(working_source)
 
-    # with open('media/bots_src/matches_mybot.py', 'r') as f: # macthes bot debug
-    # with open('media/bots_src/tic_tac_toe_mybot.py', 'r') as f:
     with open(working_source, 'r') as f:
         bot_code = f.read()
     game_code = this_game.source.read()
 
     loc = {}
     import math
-    # print(bot_code)
+
     exec(bot_code, {"__builtins__": {'__name__': __name__, 'math': math, '__build_class__': __build_class__,
                                      'randint': randint}, 'range': range, 'len': len}, loc)
-    bot_class = loc['Bot']  # ой еще тут нужно сделать парсинг имени класса, ну за идеальный час успеешь
+    bot_class = loc['Bot']
     loc = {}
     exec(game_code, None, loc)
     game_class = loc['Game']
     bot = bot_class()
     game = game_class(bot=bot)
+    
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
-        # print("game_cond", game_cond)
+
         if game_cond == "start":
             print('game start')
-            ##            url = this_bot.url_source
-
-            ##            temp_file = NamedTemporaryFile(delete=True)
-            ##            temp_file.write(urlopen(url).read())
-            ##            bot_code = temp_file.read()
-            ##            temp_file.close()
-
+            game.start_game()
             state = game.get_state()
+            # Не понял, че за приколы с field'ом, поэтому
+            # просто возвращаю полученный словарь состояния
+            
+            request.session['game_state'] = state
 
-            data = json.dumps({'inner_state': state['field']})
-            print('состояние', state['field'])
-
-            request.session['game_state'] = game.get_state()
-
-            return HttpResponse(data, content_type='json')
+            return HttpResponse(json.dumps(state), content_type='json')
         if game_cond == "running":
             print('game running')
             incoming_state = request.GET.get("inner_state")
             game = game_class(state=request.session['game_state'], bot=bot)
-
-            # user_took = game.get_state() - int(state)
-
-            # print('user took:', user_took)
 
             game.user_input(user_action=incoming_state)
             game.bot_move()
 
             new_state = game.get_state()
 
-            print('new state:', new_state)
-
-            data = json.dumps({'inner_state': new_state['field']})  # 'number'
             request.session['game_state'] = new_state
 
-            return HttpResponse(data, content_type='json')
-
-        if game_cond == "finish":
-            # print("THE END")
-            winner = request.GET.get('winner')
-            # print(winner)
-            if winner == 'bot':
-                this_bot.result = 1 + this_bot.result
-                if this_game.leader_score < this_bot.result:
-                    this_game.leader_score = this_bot.result
-                    this_game.leader = this_bot.creator_name
-                    this_game.save()
+            # Раньше победитель приходил со стороны клиента
+            # будем требовать, чтобы в состоянии игры всегда было поле 'winner'
+            # принимающее одно из значений: 'player', 'bot', 'draw', 'none'
+            # это нужно добавить в спички и крестики нолики
+            # могу и я добавить, когда проснусь
+            # Еще мне показалось, что this_bot.save() в конце функции
+            # был лишним. Верни его, если это не так.
+            if new_state['winner'] != 'none':
+                if new_state['winner'] == 'bot':
+                    this_bot.result = 1 + this_bot.result
+                    if this_game.leader_score < this_bot.result:
+                        this_game.leader_score = this_bot.result
+                        this_game.leader = this_bot.creator_name
+                        this_game.save()
+                    this_bot.save()
+                this_bot.all_games_count = 1 + this_bot.all_game_count
                 this_bot.save()
-            this_bot.all_games_count = 1 + this_bot.all_game_count
-            this_bot.save()
-    this_bot.save()
-    # print(this_game.interface)
+            
+            return HttpResponse(json.dumps(new_state), content_type='json')
+
     return render(request, this_game.interface)
 
 

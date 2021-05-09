@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    Домашняя страница
+    Home page
 {% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{%static 'botArena/css/home.css'%}">
@@ -10,54 +10,75 @@
 {% endblock %}
 
 {% block nav %}
+    <a href="{% url 'botArena:about' %}"> About </a>
+
     {% if request.user.is_staff %}
         <a href="{% url 'botArena:new_game' %}"><b> Load game </b></a>
     {% elif request.user.is_authenticated %}
 
     {% else %}
-        <a href="{% url 'botArena:login' %}">  Login  </a>
-        <a onclick="document.getElementById('id01').style.display='block'"> New login</a>
+{#        <a href="{% url 'botArena:login' %}">  Login  </a>#}
+        <a onclick="document.getElementById('id01').style.display='block'"> Sign in </a>
     {% endif %}
 
 {% endblock %}
 
 {% block content %}
+    {#    Login/Registration forms    #}
+    <h1>Games</h1>
     <div id="id01" class="modal">
         <div class="container">
-           <form method="post" action="{% url 'botArena:login' %}" class="modal-content animate" id="register">
-              <h1>Login</h1>
-                   {% csrf_token %}
+            <form method="post" action="{% url 'botArena:login' %}" class="modal-content animate" id="login_form">
+              <h1>Sign in</h1>
+               {% csrf_token %}
               <div class="fields">
                  <input type="text" name="username" id="login" value="" placeholder="username">
-                 <span class="dot">*</span>
+
               </div>
               <div class="fields">
-                 <input type="password" name="password" id="pass1" value="" placeholder="password" >
-                 <span class="dot">*</span>
+                  <input type="password" name="password" id="pass" value="" placeholder="password" >
               </div>
-              <button type="submit" name="button" id="send"> Sign up </button>
+              <button type="submit" name="button" id="send"> Sign in </button>
+           <a class='forgot' href="{% url 'botArena:password_reset' %}"> Forgot your password? </a>
            </form>
 
-          <span onclick="document.getElementById('id01').style.display='none'"
-            class="close" title="Закрыть модальный">&times;</span>
-        </div>
+            <span onclick="document.getElementById('id01').style.display='none'"
+               class="close" title="Закрыть модальный">&times;</span>
+
+           <form method="post" action="{% url 'botArena:registration' %}" id="register">
+               <h1>Sign up</h1>
+               {% csrf_token %}
+                  <div class="fields">
+                     <input type="text" name="username" id="login_in_reg" value="" placeholder="username">
+                          </div>
+                      <div class="fields">
+                         <input type="text" name="email" id="email" value="" placeholder="youmail@domain.ru">
+                      </div>
+                      <div class="fields">
+                         <input type="password" name="password" id="pass1" value="" placeholder="password" >
+                      </div>
+                      <div class="fields">
+                         <input type="password" id="pass2" value="" placeholder="repeat password" >
+                      </div>
+          <button type="submit" name="button" id="send"> Sign up </button>
+       </form>
     </div>
 
-
+    </div>
+    {{ err_msg }}
     {% if game_list %}
         <ul id="navigation">
-        {% for game in game_list %}
-          <li>
-            <a href="#">{{ game.name }}</a>
-              <div class="right">
-                  <p> {{ game.description }} <br> Best score : {{ game.leader_score }} by {{ game.leader }}</p>
-                <a href="{% url 'botArena:game' game.name %}"> Play </a>
-              </div>
-          </li>
-        {% endfor %}
+            {% for game in game_list %}
+              <li class="games_list">
+                <a href="#" class="game_name">{{ game.name }}</a>
+                  <div class="right">
+                      <p> {{ game.description }} <br> Best score : {{ game.leader_score }} by {{ game.leader }}</p>
+                    <a href="{% url 'botArena:game' game.name %}" class="play"> Play </a>
+                  </div>
+              </li>
+            {% endfor %}
         </ul>
     {% else %}
-        <p> No games are available </p>
+        <p> An authorization error occurred, and you may have entered incorrect data </p>
     {% endif %}
 {% endblock %}
-
