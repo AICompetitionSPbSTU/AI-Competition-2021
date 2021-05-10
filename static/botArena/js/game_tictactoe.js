@@ -64,22 +64,6 @@ function startGame() {
     StartRequestGet()
 }
 
-function Check(array){
-    let counter = 0
-    for (let i = 0; i < winCombos.length; i++){
-        for (let j = 0; j < winCombos[i].length; j++){
-            if (array.includes(winCombos[i][j], 0) === true){
-                counter += 1
-            }
-            if (counter === 3){
-                return true;
-            }
-        }
-        counter = 0
-    }
-    return false;
-}
-
 function CheckWin(){
     if (state.winner === 'bot'){
         alert("Bot win :(");
