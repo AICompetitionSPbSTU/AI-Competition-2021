@@ -1,7 +1,7 @@
 var canvas = document.getElementById("game_window");
 var ctx = canvas.getContext('2d');
 
-cell_size = 24
+cell_size = 20
 
 window.addEventListener("keydown", function (e) { KeyDown(e); })
 
