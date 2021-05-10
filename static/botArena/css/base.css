@@ -176,6 +176,7 @@ table tbody::-webkit-scrollbar-thumb:hover {
 
 .content {
     margin: 0 auto;
+    overflow: scroll;
 }
 .content div {
     margin: 0 auto;
@@ -184,6 +185,10 @@ table tbody::-webkit-scrollbar-thumb:hover {
 .content p{
     margin: 50px 80px;
     line-height: 1.9;
+}
+
+.content h1 {
+    text-shadow: 0 4px 0 #ffffff, 4px 0 0 #ffffff, 1px 4px 0 #ffffff, 4px 1px 0 #ffffff, 2px 4px 0 #ffffff, 4px 2px 0 #ffffff, 3px 4px 0 #ffffff, 4px 3px 0 #ffffff, 4px 4px 0 #ffffff, 4px 4px 0 #ffffff;
 }
 .content h2 {
     margin-top: 30px;
