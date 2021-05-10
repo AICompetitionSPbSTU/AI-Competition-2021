@@ -111,7 +111,7 @@ span{
   width: 350px; /* Может быть больше или меньше, в зависимости от размера экрана */
     right: 5em;
     border-radius: 5%;
-    height: 25em;
+    height: 30em;
 
 
 }
@@ -204,4 +204,9 @@ h1{
 #pass2 {
     position: relative;
     left: 2em;
+}
+
+.log {
+    position: relative;
+    top: 30em;
 }

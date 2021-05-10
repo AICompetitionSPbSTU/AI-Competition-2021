@@ -104,20 +104,26 @@ function CheckWin(){
     if (state.winner === 'bot'){
         alert("Bot win :(");
         window.location.reload();
+		return true;
     }
     else if (state.winner === 'player'){
         alert("You win :)");
         window.location.reload();
+		return true;
     }
     else if(state.winner === 'draw'){
         alert("It's a draw!");
         window.location.reload();
+		return true;
     }
+	return false;
 }
 
 
 function ImagineClick(number){
-	CheckWin();
+	if (CheckWin()) {
+		return;
+	}
     let matchesClicked = 0;
     botStep = true;
     while (matchesClicked < number){
