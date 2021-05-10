@@ -10,22 +10,23 @@ class Game:
             self.state = dict()
             self.state['field'] = 21
         else:
-            print(state)
             self.state = state
         self.bot = bot
 
     def get_state(self):
-        return self.state
+        winner = 'none' if self.state['field'] > 1 else self.get_winner()
+        state = {**self.state, 'winner': winner}
+        return state
 
     def start_game(self):
         seed()
-        self.state['turn'] = 'bot' if randint(0, 1) == 0 else 'user'
+        self.state['turn'] = 'bot' if randint(0, 1) == 0 else 'player'
 
     def bot_move(self):
         # print(self.state['number'])
         self.change_state_matches(self.bot.get_matches_number(self.state['field']))
         if self.state['field'] != 1:
-            self.change_state_turn('user')
+            self.change_state_turn('player')
 
     def user_move(self, matches_number):
         self.change_state_matches(matches_number)
@@ -51,7 +52,7 @@ class Game:
             raise BaseException('You didn`t choose matches number')
 
     def get_winner(self):
-        if self.state['field'] == 1:
+        if self.state['field'] <= 1:
             return self.state['turn']
         else:
-            return False
+            return 'none'

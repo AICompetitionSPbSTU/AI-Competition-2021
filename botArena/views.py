@@ -247,7 +247,7 @@ def playground_bot(request, game_name, bot_id):
                         this_game.leader = this_bot.creator_name
                         this_game.save()
                     this_bot.save()
-                this_bot.all_games_count = 1 + this_bot.all_game_count
+                this_bot.all_games_count = 1 + this_bot.all_games_count
                 this_bot.save()
             
             return HttpResponse(json.dumps(new_state), content_type='json')

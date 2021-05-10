@@ -17,26 +17,11 @@ function StartRequestGet(){
     request.addEventListener("readystatechange", () => {
 	    if (request.readyState === 4 && request.status === 200) {
 	        const response = JSON.parse(request.responseText);
-	        state = response.field;
+	        state = response;
         }
     });
     request.send('start');
 }
-
-function FinishRequestGet(winner){
-    const request = new XMLHttpRequest();
-    const url = "?game_cond=finish&winner=" + winner;
-    request.open('GET', url);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-    request.addEventListener("readystatechange", () => {
-	    if (request.readyState === 4 && request.status === 200) {
-	        const response = JSON.parse(request.responseText);
-	        state = response.inner_state;
-        }
-    });
-    request.send('start');
-}
-
 
 function RequestRunning(inner_state){
     let request = new XMLHttpRequest();
@@ -47,8 +32,11 @@ function RequestRunning(inner_state){
 
         if(request.readyState === 4 && request.status === 200) {
             const response = JSON.parse(request.responseText);
-	        state = response.inner_state;
+	        state = response;
 	        console.log(request.responseText)
+		
+			ImagineClick(numberOfMatches - globalCounter - state.field)
+			counter = 0
         }
     });
 
@@ -103,10 +91,6 @@ function Check() {
     }
 }
 
-function sleep (time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
-
 function ButtonEvent() {
     Check()
     if (counter === 0) {
@@ -114,40 +98,26 @@ function ButtonEvent() {
         return;
     }
     RequestRunning(counter)
-    sleep(500).then(() => {
-        if (state === 1) {
-            alert('Bot win :(');
-            FinishRequestGet('bot');
-            window.location.reload();
-        }
-        else if (state === 0)
-        {
-            alert('You win!')
-            FinishRequestGet('user');
-            window.location.reload();
-        }
-        else if (state < 0) {
-            if (globalCounter === 21){
-                alert('Bot win :(')
-                FinishRequestGet('bot');
-                window.location.reload();
-                return;
-            }
-            else {
-                alert('You win!')
-                FinishRequestGet('user');
-                window.location.reload();
-                return;
-            }
-        }
-        ImagineClick(numberOfMatches - globalCounter - state)
-        counter = 0
+}
 
-    });
+function CheckWin(){
+    if (state.winner === 'bot'){
+        alert("Bot win :(");
+        window.location.reload();
+    }
+    else if (state.winner === 'player'){
+        alert("You win :)");
+        window.location.reload();
+    }
+    else if(state.winner === 'draw'){
+        alert("It's a draw!");
+        window.location.reload();
+    }
 }
 
 
 function ImagineClick(number){
+	CheckWin();
     let matchesClicked = 0;
     botStep = true;
     while (matchesClicked < number){
