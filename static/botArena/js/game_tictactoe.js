@@ -31,26 +31,11 @@ function StartRequestGet(){
     request.addEventListener("readystatechange", () => {
         if (request.readyState === 4 && request.status === 200) {
             const response = JSON.parse(request.responseText);
-            state = response.field;
+            state = response;
         }
     });
     request.send('start');
 }
-
-function FinishRequestGet(winner){
-    const request = new XMLHttpRequest();
-    const url = "?game_cond=finish&winner=" + winner;
-    request.open('GET', url);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-url');
-    request.addEventListener("readystatechange", () => {
-	    if (request.readyState === 4 && request.status === 200) {
-	        const response = JSON.parse(request.responseText);
-	        state = response.inner_state;
-        }
-    });
-    request.send('start');
-}
-
 
 function RequestRunning(inner_state){
     let request = new XMLHttpRequest();
@@ -60,7 +45,8 @@ function RequestRunning(inner_state){
     request.addEventListener("readystatechange", () => {
         if(request.readyState === 4 && request.status === 200) {
             const response = JSON.parse(request.responseText);
-	        state = response.inner_state;
+	        state = response;
+			ImagineClick();
         }
     });
 
@@ -95,29 +81,16 @@ function Check(array){
 }
 
 function CheckWin(){
-    let indexesO = Array();
-    let indexesX = Array();
-    for (let i = 0; i < state.length; i++) {
-        if (state[i] === 0) {
-            indexesO.push(i);
-        }
-        if (state[i] === 1) {
-            indexesX.push(i)
-        }
-    }
-    if (Check(indexesO) === true){
+    if (state.winner === 'bot'){
         alert("Bot win :(");
-        FinishRequestGet('bot');
         window.location.reload();
     }
-    else if (Check(indexesX) === true){
+    else if (state.winner === 'player'){
         alert("You win :)");
-        FinishRequestGet('user');
         window.location.reload();
     }
-    if(occupied.every((elem) => elem === true)){
+    if(state.winner === 'draw'){
         alert("It's a draw!");
-        FinishRequestGet('draw')
         window.location.reload();
     }
 }
@@ -133,7 +106,6 @@ function turnClick() {
             occupied[this.id] = true;
             buttonEvent = true;
             choosed = this.id;
-            CheckWin();
         }
         else {
             alert("Press 'Next step'");
@@ -146,7 +118,6 @@ function turnClick() {
             document.getElementById(this.id).style.pointerEvents = 'none';
             occupied[this.id] = true;
             botMove = false;
-            CheckWin();
         }
         else {
             alert("Now is your move")
@@ -155,9 +126,6 @@ function turnClick() {
 
 }
 
-function Sleep(time) {
-  return new Promise((resolve) => setTimeout(resolve, time));
-}
 
 function ButtonEvent(){
     if(buttonEvent === false){
@@ -165,21 +133,17 @@ function ButtonEvent(){
     }
     else{
         counter = 0;
+		console.log('request running')
         RequestRunning(choosed  );
-        Sleep(500).then(() => {
-            ImagineClick();
-        });
     }
-
-
 }
 
-
 function ImagineClick(){
+	CheckWin();
     console.log('imagine click');
     botMove = true;
-    for (let i = 0; i < state.length; i++) {
-        if (state[i] === 0 && occupied[i] === false) {
+    for (let i = 0; i < state.field.length; i++) {
+        if (state.field[i] === 0 && occupied[i] === false) {
             cells[i].click();
             return;
         }
