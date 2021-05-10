@@ -129,13 +129,13 @@ jQuery(function($) {
       var v_login = true;
       el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short</span>');
       document.getElementById('login').style.color = "red";
-      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() - 110});
     }
     else if ( el_l.val().length > 16 ) {
       var v_login = true;
       el_l.after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too long</span>');
       document.getElementById('login').style.color = "red";
-      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+      $(".for-login").css({top: el_l.position().top + el_l.outerHeight() - 110});
     }
     else{
         document.getElementById('login').style.color = "blue";
@@ -149,7 +149,7 @@ jQuery(function($) {
     if ( el_p1.val().length < 8 ) {
         el_p1.after('<br class="text-error for-login"> <span class="text-error for-login"> Password is too short</span>');
         document.getElementById('pass').style.color = "red";
-        $(".for-login").css({top: el_l.position().top + el_l.outerHeight() + 2});
+        $(".for-login").css({top: el_l.position().top + el_l.outerHeight() - 110});
 
     }
     else {
