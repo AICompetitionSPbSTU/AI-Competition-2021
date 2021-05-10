@@ -25,7 +25,7 @@
             <table>
             <caption>Competition table</caption>
                 <thead>
-                <tr><th> Player </th> <th></th> <th> Best score </th></tr>
+                <tr><th> Player </th> <th> Best score </th></tr>
                 </thead>
                 <tbody>
                 {% for bot in game.bot_set.all  %}
@@ -41,7 +41,6 @@
             {% endif %}
         </div>
     {% endif %}
-        <a  href="{% url 'botArena:download_bot' game.name %}" download> Download Bot Example </a>
 {% endblock %}
 
 

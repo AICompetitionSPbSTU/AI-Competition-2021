@@ -1,10 +1,32 @@
 
-
 .c {
 	position: relative;
 	margin-left: 5%;
 	width: 35%;
 	height: 60%;
+}
+
+div {
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+table{
+	margin: auto;
+    text-align: center;
+    table-layout: fixed;
+    border-spacing: 0px;
+}
+
+caption {
+    caption-side: top;
+    margin-top: 30px;
+    text-align: center;
+    text-shadow: 0 4px 0 #ffffff, 4px 0 0 #ffffff, 1px 4px 0 #ffffff, 4px 1px 0 #ffffff, 2px 4px 0 #ffffff, 4px 2px 0 #ffffff, 3px 4px 0 #ffffff, 4px 3px 0 #ffffff, 4px 4px 0 #ffffff, 4px 4px 0 #ffffff;
+    font-size: 1em;
 }
 
 th, td:first-child {
