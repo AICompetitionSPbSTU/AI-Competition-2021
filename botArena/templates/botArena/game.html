@@ -17,8 +17,7 @@
 
 {% block content %}
     <h2> {{game.name}} </h2>
-    <p>{{ description }}</p>
-    <a  href="{% url 'botArena:download_bot' game.name %}" download> Download Bot Example </a>
+    <p>{{ description }} <a  href="{% url 'botArena:download_bot' game.name %}" download> Download bot example </a></p>
     {% if game %}
         <div class="c">
             {%  if game.bot_set.all %}
