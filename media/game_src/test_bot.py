@@ -11,12 +11,13 @@ class Game:
             self.state = dict()
             self.state['field'] = [-1 for _ in range(9)]
         else:
-            print(state)
             self.state = state
         self.bot = bot
 
     def get_state(self):
-        return self.state
+        winner = self.get_winner()
+        state = {**self.state, 'winner': winner}
+        return state
 
     def start_game(self):
         seed()
@@ -56,7 +57,25 @@ class Game:
             raise BaseException('You didn`t choose matches number')
 
     def get_winner(self):
-        if self.state['field'] == 1:
-            return self.state['turn']
+        print(self.state['field'])
+        for cell in self.state['field']:            
+            if cell == -1:
+                break
         else:
-            return False
+            return 'draw'
+        winCombos = [
+          [0, 1, 2],
+          [3, 4, 5],
+          [6, 7, 8],
+          [0, 3, 6],
+          [1, 4, 7],
+          [2, 5, 8],
+          [0, 4, 8],
+          [6, 4, 2]
+        ]
+        for combo in winCombos:
+            if all(self.state['field'][idx]==0 for idx in combo):
+                return 'bot'
+            if all(self.state['field'][idx]==1 for idx in combo):
+                return 'player'
+        return 'none'
