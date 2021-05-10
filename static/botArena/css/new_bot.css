@@ -1,4 +1,16 @@
 form{
-    margin-top: 5%;
-    margin-left: 35%;
+    background: #b4b4ee59;
+    margin-top: 15%;
+    margin-left: 2%;
+    opacity: 0.88;
+}
+
+button, input {
+    overflow: visible;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+input#sub {
 }
