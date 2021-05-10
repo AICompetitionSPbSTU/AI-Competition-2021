@@ -1,2 +1,7 @@
-Add description for pacman Add description for pacman Add description for pacman Add description for pacman
-Add description for pacman Add description for pacman Add description for pacman
+In this game player controls a yellow circle and bot controls a red circle.
+Your goal is to collect as many coins as you can. The game ends as soon as all
+the coins are collected and the one who collects the largest amount of coins wins.
+Use the arrows: up, down, left, right to control your character.
+
+
+Below you can see .txt file with template of bot. Copy it in your .py file and begin to create your own winner. Remind: bot must be written on Python!
