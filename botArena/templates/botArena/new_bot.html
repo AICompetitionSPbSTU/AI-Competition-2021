@@ -15,7 +15,7 @@
 {% block content%}
     <div>
         <form id='form' method="post" enctype="multipart/form-data">
-            <input type="file" accept=".py" id="file-input">
+            <input type="file" accept=".py" id="file-input" lang = "en">
             <p hidden><input type="url" name="url_source" id="url_source" value="" ></p>
             {% csrf_token %}
 {#            <div id='hid'>{{ form.as_p }}</div>#}

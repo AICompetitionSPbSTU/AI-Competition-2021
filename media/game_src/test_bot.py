@@ -58,24 +58,33 @@ class Game:
 
     def get_winner(self):
         print(self.state['field'])
+        winCombos = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [6, 4, 2]
+        ]
         for cell in self.state['field']:            
             if cell == -1:
                 break
         else:
+            for combo in winCombos:
+                if all(self.state['field'][idx] == 0 for idx in combo):
+                    return 'bot'
+                if all(self.state['field'][idx] == 1 for idx in combo):
+                    return 'player'
             return 'draw'
-        winCombos = [
-          [0, 1, 2],
-          [3, 4, 5],
-          [6, 7, 8],
-          [0, 3, 6],
-          [1, 4, 7],
-          [2, 5, 8],
-          [0, 4, 8],
-          [6, 4, 2]
-        ]
+
         for combo in winCombos:
-            if all(self.state['field'][idx]==0 for idx in combo):
+            if all(self.state['field'][idx] == 0 for idx in combo):
                 return 'bot'
-            if all(self.state['field'][idx]==1 for idx in combo):
+            if all(self.state['field'][idx] == 1 for idx in combo):
                 return 'player'
         return 'none'
+
+    def look_for_combo(self):
+        pass

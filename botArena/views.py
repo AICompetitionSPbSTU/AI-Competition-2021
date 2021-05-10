@@ -206,7 +206,7 @@ def playground_bot(request, game_name, bot_id):
     game_class = loc['Game']
     bot = bot_class()
     game = game_class(bot=bot)
-    
+
     if request.method == "GET":
         game_cond = request.GET.get("game_cond")
 
@@ -216,7 +216,7 @@ def playground_bot(request, game_name, bot_id):
             state = game.get_state()
             # Не понял, че за приколы с field'ом, поэтому
             # просто возвращаю полученный словарь состояния
-            
+
             request.session['game_state'] = state
 
             return HttpResponse(json.dumps(state), content_type='json')
@@ -226,11 +226,13 @@ def playground_bot(request, game_name, bot_id):
             game = game_class(state=request.session['game_state'], bot=bot)
 
             game.user_input(user_action=incoming_state)
-            game.bot_move()
-
             new_state = game.get_state()
+            if new_state['winner'] == 'none':
+                game.bot_move()
 
-            request.session['game_state'] = new_state
+                new_state = game.get_state()
+
+                request.session['game_state'] = new_state
 
             # Раньше победитель приходил со стороны клиента
             # будем требовать, чтобы в состоянии игры всегда было поле 'winner'
@@ -241,6 +243,7 @@ def playground_bot(request, game_name, bot_id):
             # был лишним. Верни его, если это не так.
             if new_state['winner'] != 'none':
                 if new_state['winner'] == 'bot':
+                    # print("bot win!")
                     this_bot.result = 1 + this_bot.result
                     if this_game.leader_score < this_bot.result:
                         this_game.leader_score = this_bot.result
@@ -249,7 +252,7 @@ def playground_bot(request, game_name, bot_id):
                     this_bot.save()
                 this_bot.all_games_count = 1 + this_bot.all_games_count
                 this_bot.save()
-            
+
             return HttpResponse(json.dumps(new_state), content_type='json')
 
     return render(request, this_game.interface)

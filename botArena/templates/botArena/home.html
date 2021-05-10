@@ -17,6 +17,7 @@
     {% elif request.user.is_authenticated %}
 
     {% else %}
+
 {#        <a href="{% url 'botArena:login' %}">  Login  </a>#}
         <a onclick="document.getElementById('id01').style.display='block'"> Sign in </a>
     {% endif %}
