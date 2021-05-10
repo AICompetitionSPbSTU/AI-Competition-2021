@@ -24,7 +24,7 @@ ul li a + div {
 	position: absolute;
 	left: 100%;
 	bottom: -150%;
-	width: 300px;
+	width: 320px;
     height: 300px;
     opacity: 0.9;
 }
