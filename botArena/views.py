@@ -243,7 +243,7 @@ def playground_bot(request, game_name, bot_id):
             # был лишним. Верни его, если это не так.
             if new_state['winner'] != 'none':
                 if new_state['winner'] == 'bot':
-                    print("bot win!")
+                    # print("bot win!")
                     this_bot.result = 1 + this_bot.result
                     if this_game.leader_score < this_bot.result:
                         this_game.leader_score = this_bot.result
