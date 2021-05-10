@@ -161,12 +161,12 @@ jQuery(function($) {
     return ( v_login || v_pass1);
   }
 
-  $('#login_form').on('submit', function(event) {
-    if ( validateLoginForm() ) { // если есть ошибки возвращает true
-      event.preventDefault();
-      $( ".send" ).after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short </span>');
-
-    }});
+  // $('#login_form').on('submit', function(event) {
+  //   if ( validateLoginForm() ) { // если есть ошибки возвращает true
+  //     event.preventDefault();
+  //     $( ".send" ).after('<br class="text-error for-login"> <span class="text-error for-login"> Username is too short </span>');
+  //
+  //   }});
 
   $('#login_form').on('input', function (event) {
       validateLoginForm()
@@ -253,10 +253,10 @@ jQuery(function($) {
     return ( v_login || v_email || v_pass1 || v_pass2 );
   }
 
-  $('#register').on('submit', function(event) {
-    if ( validateForm() ) { // если есть ошибки возвращает true
-      event.preventDefault();
-    }});
+  // $('#register').on('submit', function(event) {
+  //   if ( validateForm() ) { // если есть ошибки возвращает true
+  //     event.preventDefault();
+  //   }});
 
 
   $('#register').on('input', function (event) {
