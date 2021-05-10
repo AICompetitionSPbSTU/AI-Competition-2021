@@ -176,7 +176,6 @@ table tbody::-webkit-scrollbar-thumb:hover {
 
 .content {
     margin: 0 auto;
-    overflow-y: scroll;
 }
 .content div {
     margin: 0 auto;

@@ -6,8 +6,19 @@
 	height: 60%;
 }
 
+div {
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 table{
 	margin: auto;
+    text-align: center;
+    table-layout: fixed;
+    border-spacing: 0px;
 }
 
 caption {
